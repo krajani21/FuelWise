@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FuelListVolume from './pages/FuelListVolume';
-import './App.css';
-import './styles/global.css'; 
 import FuelListDistance from './pages/fuelListDistance';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './routes/PrivateRoute';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import LandingPage from './pages/LandingPage';
+import './App.css';
+import './styles/global.css';
 
 function App() {
   const [userLocation, setUserLocation] = useState(null);
@@ -16,46 +21,37 @@ function App() {
           lng: position.coords.longitude,
         };
         setUserLocation(coords);
-        console.log("user location: ", coords);
       },
       (error) => {
-        console.error("Error getting location: ", error);
-        alert("Unable to retrieve your location. Please allow location access in your browser settings.");
+        console.error("Error getting location:", error);
+        alert("Unable to retrieve location. Please allow access.");
       }
     );
   };
 
   return (
-    <Router>
-      <div className="App" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
-        <button
-          onClick={handleGetLocation}
-          style={{
-            marginBottom: "20px",
-            padding: "10px 16px",
-            borderRadius: "6px",
-            backgroundColor: "#007BFF",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Get location
-        </button>
-
-        <nav className = "nav-links">
-          <Link to="/" className="nav-button">Sort by Distance</Link>
-          
-          <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<FuelListDistance userLocation={userLocation} />} />
-          <Route path="/volume" element={<FuelListVolume userLocation={userLocation} />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
+          <button onClick={handleGetLocation} className="nav-button">Get Location</button>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/distance" element={
+              <PrivateRoute>
+                <FuelListDistance userLocation={userLocation} />
+              </PrivateRoute>
+            } />
+            <Route path="/volume" element={
+              <PrivateRoute>
+                <FuelListVolume userLocation={userLocation} />
+              </PrivateRoute>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
