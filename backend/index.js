@@ -5,6 +5,7 @@ const volumeBasedRoutes = require("./routes/volumeBasedRoutes")
 const distanceOnlyRoutes = require("./routes/distanceOnlyRoutes");
 const authRoutes = require("./routes/authRoutes")
 const cors = require("cors");
+const verifyToken = require("./middleware/authMiddleware");
 
 
 
@@ -28,6 +29,10 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use("/api/auth", authRoutes);//handle authentication logic
 app.use("/api/volume-based", volumeBasedRoutes);//handle volume based logic
 app.use("/api/distances-only", distanceOnlyRoutes)
+
+app.get("/api/protected", verifyToken, (req, res) =>{
+  res.json( {message: "you are now authorised", userId: req.user.id})
+});
 
 // Optional root route
 app.get("/", (req, res) => {
