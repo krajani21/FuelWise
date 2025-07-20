@@ -13,9 +13,9 @@ button {
 }
 
 .auth-container {
-  max-width: 400px;
+  max-width: 500px;
   margin: 40px auto;
-  padding: 30px;
+  padding: 40px 30px;
   background: #f5faff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
