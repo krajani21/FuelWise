@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import FuelListVolume from './pages/FuelListVolume';
 import FuelListDistance from './pages/fuelListDistance';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import LogoutButton from './components/LogoutButton'
 import LandingPage from './pages/LandingPage';
 import PrivateRoute from './routes/PrivateRoute';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import './App.css';
 import './styles/global.css';
 
@@ -41,6 +42,7 @@ function App() {
             <Route path="/distance" element={
               <PrivateRoute>
                 <>
+                  <LogoutButton/>
                   <button
                     onClick={handleGetLocation}
                     className="nav-button"
@@ -61,6 +63,7 @@ function App() {
             <Route path="/volume" element={
               <PrivateRoute>
                 <>
+                  <LogoutButton/>
                   <button
                     onClick={handleGetLocation}
                     className="nav-button"

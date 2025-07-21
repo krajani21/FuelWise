@@ -61,3 +61,24 @@ button {
   font-weight: bold;
   text-decoration: none;
 }
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+
+/* .nav-button.logout {
+  background-color: #dc3545;
+} */
+
+
