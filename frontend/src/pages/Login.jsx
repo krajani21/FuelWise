@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/distance";
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
@@ -21,7 +24,7 @@ const Login = () => {
       const data = await res.json();
       if (res.ok) {
         login(data.token);
-        navigate("/distance");
+        navigate(from, { replace: true }); // redirect back to original route
       } else {
         setError(data.error || "Login failed");
       }
