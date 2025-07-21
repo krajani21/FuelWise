@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import FuelListVolume from './pages/FuelListVolume';
 import FuelListDistance from './pages/fuelListDistance';
 import Login from './pages/Login';
@@ -11,8 +11,8 @@ import { AuthProvider } from './context/AuthContext';
 import './App.css';
 import './styles/global.css';
 
-function App() {
-  const [userLocation, setUserLocation] = useState(null);
+const AppContent = ({ userLocation, setUserLocation }) => {
+  const location = useLocation();
 
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
@@ -31,63 +31,76 @@ function App() {
     );
   };
 
+  // Define routes where LogoutButton should NOT appear
+  const publicRoutes = ['/', '/login', '/signup'];
+  const hideLogout = publicRoutes.includes(location.pathname);
+
+  return (
+    <div>
+      {!hideLogout && <LogoutButton />}
+
+      <div className="App" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          <Route
+            path="/distance"
+            element={
+              <PrivateRoute>
+                <>
+                  <button
+                    onClick={handleGetLocation}
+                    className="nav-button"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    Get location
+                  </button>
+                  <nav className="nav-links">
+                    <Link to="/distance" className="nav-button">Sort by Distance</Link>
+                    <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
+                  </nav>
+                  <FuelListDistance userLocation={userLocation} />
+                </>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/volume"
+            element={
+              <PrivateRoute>
+                <>
+                  <button
+                    onClick={handleGetLocation}
+                    className="nav-button"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    Get location
+                  </button>
+                  <nav className="nav-links">
+                    <Link to="/distance" className="nav-button">Sort by Distance</Link>
+                    <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
+                  </nav>
+                  <FuelListVolume userLocation={userLocation} />
+                </>
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </div>
+  );
+};
+
+function App() {
+  const [userLocation, setUserLocation] = useState(null);
+
   return (
     <AuthProvider>
       <Router>
-        <div>
-          {/* Always render the LogoutButton at top right */}
-          <LogoutButton />
-
-          <div className="App" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              
-              <Route path="/distance" element={
-                <PrivateRoute>
-                  <>
-                    <button
-                      onClick={handleGetLocation}
-                      className="nav-button"
-                      style={{ marginBottom: "20px" }}
-                    >
-                      Get location
-                    </button>
-
-                    <nav className="nav-links">
-                      <Link to="/distance" className="nav-button">Sort by Distance</Link>
-                      <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
-                    </nav>
-
-                    <FuelListDistance userLocation={userLocation} />
-                  </>
-                </PrivateRoute>
-              } />
-
-              <Route path="/volume" element={
-                <PrivateRoute>
-                  <>
-                    <button
-                      onClick={handleGetLocation}
-                      className="nav-button"
-                      style={{ marginBottom: "20px" }}
-                    >
-                      Get location
-                    </button>
-
-                    <nav className="nav-links">
-                      <Link to="/distance" className="nav-button">Sort by Distance</Link>
-                      <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
-                    </nav>
-
-                    <FuelListVolume userLocation={userLocation} />
-                  </>
-                </PrivateRoute>
-              } />
-            </Routes>
-          </div>
-        </div>
+        <AppContent userLocation={userLocation} setUserLocation={setUserLocation} />
       </Router>
     </AuthProvider>
   );
