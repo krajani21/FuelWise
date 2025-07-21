@@ -8,15 +8,11 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/"); // go back to landing page
+    navigate("/");
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      className="nav-button"
-      style={{ marginBottom: "20px", backgroundColor: "#dc3545" }}
-    >
+    <button onClick={handleLogout} className="logout-button">
       Logout
     </button>
   );
