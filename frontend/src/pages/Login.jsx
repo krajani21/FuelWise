@@ -24,7 +24,7 @@ const Login = () => {
       const data = await res.json();
       if (res.ok) {
         login(data.token);
-        navigate(from, { replace: true }); // redirect back to original route
+        navigate(from, { replace: true }); // redirect back to original route if they were trying to access a protected route before being told to login
       } else {
         setError(data.error || "Login failed");
       }
