@@ -1,108 +1,104 @@
 ## FuelWise Web App
 
-**Live Demo**
-Click on the Link below to try out the app yourself, and start saving on your fuel immediately!
-https://fuel-frontend-ten.vercel.app/
+🚀 **Live Demo**  
+Try it out now and start saving on fuel:  
+[https://fuel-frontend-ten.vercel.app/](https://fuel-frontend-ten.vercel.app/)
 
-
-
-
-**Design Document**
+📝 **Design Document**  
 **Author:** Krish Rajani
 
 ---
 
 ## Overview
 
-This project is a full-stack web application that helps users find the most cost-effective fuel stations based on their current location, travel distance, and fuel prices. The application leverages Google Maps APIs and a custom backend to provide real-time comparisons. The frontend is built with React, and the backend is built using Node.js, Express, and MongoDB.
+FuelWise is a full-stack web app that helps users find the most cost-effective fuel stations based on their location, travel distance, and fuel prices. It leverages Google Maps APIs and a custom backend for real-time comparisons. The frontend is built with React, and the backend uses Node.js, Express, and MongoDB.
 
 ---
 
 ## Core Features (Implemented)
 
-### 1. **Location-Aware Fuel Station Listing** **Location-Aware Fuel Station Listing**
+### 1. **Location-Aware Fuel Station Listing**
 
-- The app fetches the user's current location using the Geolocation API.
-- Based on the coordinates, it calls backend APIs to retrieve nearby stations.
-- Fuel stations are sorted either by volume-based cost or distance-only.
+- Automatically fetches the user's current location using the Geolocation API.
+- Retrieves nearby fuel stations from the backend based on coordinates.
+- Supports sorting by total fuel cost (volume-based) or by shortest distance.
 
-### 2. **Google Maps Redirection**
+### 2. **Google Maps Navigation**
 
-- When a user clicks on a fuel station card, a new tab opens Google Maps with directions from the user's location to the station.
-- Mode of transport is automatically set to "driving."
+- Clicking a fuel station opens Google Maps in a new tab with directions from the user's current location.
+- Navigation mode defaults to **driving**.
 
 ### 3. **Dynamic Fuel Station Data**
 
-- Fuel price and distance data is fetched dynamically using the new Google Maps Places API.
-- Data is rendered in a visually styled component list (with improved in-line styling or CSS modules).
+- Uses the Google Maps Places API to fetch real-time fuel prices and distances.
+- Stations are displayed in visually styled cards with clean in-line styles or CSS modules.
 
 ### 4. **User Authentication**
 
-- Users can sign up and log in securely.
-- JWT-based authentication is implemented, with tokens stored in localStorage.
-- Protected routes like `/volume` and `/distance` are secured using context-based or HOC-based `PrivateRoute` logic. using the new Google Maps Places API.
-- Data is rendered in a visually styled component list (with improved in-line styling or CSS modules).
+- Secure signup and login via JWT-based authentication.
+- Tokens stored in localStorage.
+- Protected routes (`/volume`, `/distance`) secured via context-based or HOC-style `PrivateRoute` components.
+
+### 5. **UI Cleanup and UX Enhancements**
+
+- Refine styling for:
+  - Station cards (hover effects, gradients, padding).
+  - Buttons (e.g., “Sort”, “Get Directions”).
+  - Headers and mobile spacing.
+- Apply consistent theming across components.
 
 ---
 
 ## Features to Be Implemented
 
-### 1. **UI Cleanup and UX Enhancements**
 
-- Improve styling for:
-  - Fuel station cards (padding, hover effects, gradients).
-  - Buttons (Sort, Get Directions, etc.).
-  - Headers and spacing for mobile responsiveness.
-- Consistent theming (background, text, shadows).
+### 1. **Search Radius Filter**
 
-### 2. **Search Radius Filter**
+- Add input/slider for users to set a search radius (e.g., 5 km, 10 km).
+- Backend filters stations accordingly using the Places API.
 
-- Add an input field or slider to let users specify a search radius (e.g., 5 km, 10 km).
-- Pass this radius to the backend to filter stations using Google Maps Places API.
+### 2. **Display of Fuel Types**
 
-### 3. **Display of Fuel Types**
-
-- Show fuel type options like Regular, Premium, Diesel if available.
-- API should be updated to include price data for each type if available.
-- Add tabs or dropdown on the frontend for user to toggle between fuel types.
+- Show available fuel types (Regular, Premium, Diesel).
+- Update API to support price data per fuel type.
+- Frontend UI with dropdown or tabs for toggling fuel types.
 
 ---
 
 ## Technical Stack
 
-- **Frontend:** React.js
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **APIs:** Google Maps Distance Matrix, Places, Geolocation API
+- **Frontend:** React.js  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB  
+- **APIs:** Google Maps (Distance Matrix, Places), Geolocation API
 
 ---
 
 ## Deployment
 
-- **Frontend:** Vercel
-- **Backend:** Render 
-- Environment variables used for API keys and Mongo URI.
+- **Frontend:** Vercel  
+- **Backend:** Render  
+- Environment variables used for API keys and MongoDB URI.
 
 ---
 
 ## Next Steps
 
-1. Finalize user auth flows (with error handling and loading states).
-2. Refactor UI components and global CSS.
-3. Add radius-based filtering logic on both frontend and backend.
-4. Update fuel data model to include fuel types.
-5. Conduct mobile usability testing and optimize performance.
+1. Finalize auth flows (including loading states and error handling).
+2. Refactor UI components and simplify global styling.
+3. Implement radius-based station filtering.
+4. Extend the data model to include fuel types.
+5. Test mobile usability and optimize performance.
 
 ---
 
 ## Notes
 
-- Keep user experience minimal and snappy.
-- Ensure secure handling of tokens.
-- Consider caching frequent station data.
-- Add loading spinners where API calls are slow.
+- Prioritize speed and simplicity in UX.
+- Securely handle user tokens.
+- Consider caching frequent station data to reduce API calls.
+- Add loading spinners for slow responses.
 
 ---
 
 **End of Document**
-
