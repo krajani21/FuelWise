@@ -32,14 +32,53 @@ const Signup = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit} className="auth-form">
-        <input name="username" placeholder="Username" value={form.username} onChange={handleChange} required />
-        <input name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-        <button type="submit">Sign Up</button>
-        {error && <p className="auth-error">{error}</p>}
+    <div className="login-wrapper">
+      <form onSubmit={handleSubmit} className="login-card">
+        <h2 className="login-title">Create an Account</h2>
+
+        <label htmlFor="username" className="login-label">Username</label>
+        <input
+          name="username"
+          type="text"
+          id="username"
+          placeholder="Choose a username"
+          value={form.username}
+          onChange={handleChange}
+          required
+          className="login-input"
+        />
+
+        <label htmlFor="email" className="login-label">Email</label>
+        <input
+          name="email"
+          type="email"
+          id="email"
+          placeholder="you@example.com"
+          value={form.email}
+          onChange={handleChange}
+          required
+          className="login-input"
+        />
+
+        <label htmlFor="password" className="login-label">Password</label>
+        <input
+          name="password"
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          value={form.password}
+          onChange={handleChange}
+          required
+          className="login-input"
+        />
+
+        {error && <p className="login-error">{error}</p>}
+
+        <button type="submit" className="login-button">Sign Up</button>
+
+        <div className="login-footer">
+          <a href="/login" className="forgot-password">Already have an account?</a>
+        </div>
       </form>
     </div>
   );
