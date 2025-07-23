@@ -138,3 +138,24 @@
 .landing-buttons .login-button {
   width: 100%;
 }
+
+.logout-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.25s ease;
+}
+
+.logout-button:hover {
+  background-color: #c9302c;
+}
