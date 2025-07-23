@@ -106,3 +106,35 @@
     font-size: 15px;
   }
 }
+
+/* Landing Page */
+.landing-card {
+  align-items: center;
+  text-align: center;
+}
+
+.landing-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 12px;
+}
+
+.landing-subtitle {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+.landing-buttons {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  width: 100%;
+}
+
+.landing-buttons .login-button {
+  width: 100%;
+}
