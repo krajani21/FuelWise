@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import "./Login.css";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -24,7 +25,7 @@ const Login = () => {
       const data = await res.json();
       if (res.ok) {
         login(data.token);
-        navigate(from, { replace: true }); // redirect back to original route if they were trying to access a protected route before being told to login
+        navigate(from, { replace: true });
       } else {
         setError(data.error || "Login failed");
       }
@@ -35,13 +36,38 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit} className="auth-form">
-        <input name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-        <button type="submit">Login</button>
-        {error && <p className="auth-error">{error}</p>}
+    <div className="login-wrapper">
+      <form onSubmit={handleSubmit} className="login-card">
+        <h2 className="login-title">Welcome Back</h2>
+
+        <label htmlFor="email" className="login-label">Email</label>
+        <input
+          name="email"
+          type="email"
+          id="email"
+          placeholder="you@example.com"
+          value={form.email}
+          onChange={handleChange}
+          required
+          className="login-input"
+        />
+
+        <label htmlFor="password" className="login-label">Password</label>
+        <input
+          name="password"
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          value={form.password}
+          onChange={handleChange}
+          required
+          className="login-input"
+        />
+
+        {error && <p className="login-error">{error}</p>}
+
+        <button type="submit" className="login-button">Sign In</button>
+
       </form>
     </div>
   );
