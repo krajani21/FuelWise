@@ -1,4 +1,22 @@
-/* Layout */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(270deg, #f0f4ff, #e4e9f2, #f0f4ff);
+  background-size: 600% 600%;
+  animation: moveBackground 15s ease infinite;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+@keyframes moveBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+
 .login-wrapper {
   min-height: 100vh;
   display: flex;
