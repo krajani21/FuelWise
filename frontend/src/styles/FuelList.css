@@ -1,67 +1,69 @@
-/* FuelList.css */
-
+/* Global Page Styling */
 .page-container {
-  padding: 20px;
-  max-width: 800px;
+  padding: 40px 20px;
+  max-width: 900px;
   margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f0f4ff, #e4e9f2);
+  min-height: 100vh;
 }
 
+/* Heading */
 .heading {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
   text-align: center;
+  color: #222;
 }
 
+/* Station List */
 .station-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
 }
 
+/* Station Cards */
 .station-card {
-  padding: 18px 22px;
-  margin-bottom: 18px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  border-left: 5px solid #007BFF;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  border-left: 6px solid #007BFF;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .station-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
 }
 
 .station-card strong {
-  font-size: 1.1em;
-  color: #222;
+  font-size: 1.2em;
+  color: #111;
 }
 
 .station-meta {
-  font-size: 0.9em;
+  font-size: 0.95em;
   color: #555;
   margin-top: 6px;
 }
 
 .station-volume {
-  font-size: 0.95em;
-  color: #111;
-  margin-top: 4px;
-}
-
-input,
-button {
   font-size: 1em;
+  color: #222;
+  margin-top: 8px;
 }
 
+/* Input + Button Group */
 .input-group {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 30px;
 }
 
 .input-group label {
@@ -72,61 +74,69 @@ button {
 }
 
 .input-group input {
-  padding: 6px 10px;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  width: 100px;
+  width: 120px;
+  font-size: 1em;
 }
 
 .input-group button {
-  padding: 6px 16px;
-  border-radius: 4px;
+  padding: 8px 18px;
+  border-radius: 6px;
   background-color: #007BFF;
   color: white;
+  font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .input-group button:hover {
   background-color: #0056c7;
+  transform: scale(1.03);
 }
 
+/* Navigation Links */
 .nav-links {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .nav-button {
-  background-color: #f0f4ff;
+  background-color: #e9efff;
   color: #007BFF;
-  padding: 8px 14px;
-  border-radius: 6px;
-  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
   font-weight: 600;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
 .nav-button:hover {
   background-color: #007BFF;
-  color: #fff;
+  color: white;
+  border: 1px solid #007BFF;
 }
 
+/* Directions Button */
 .directions-button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  font-size: 0.9em;
+  margin-top: 12px;
+  padding: 10px 16px;
+  font-size: 0.95em;
   background-color: #007BFF;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .directions-button:hover {
   background-color: #0056b3;
+  transform: translateY(-1px);
 }
-
