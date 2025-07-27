@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import FuelListVolume from './pages/FuelListVolume';
-import './App.css';
-import './styles/global.css'; 
 import FuelListDistance from './pages/fuelListDistance';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import LogoutButton from './components/LogoutButton';
+import LandingPage from './pages/LandingPage';
+import PrivateRoute from './routes/PrivateRoute';
+import { AuthProvider } from './context/AuthContext';
+import './App.css';
+import './styles/global.css';
 
-function App() {
-  const [userLocation, setUserLocation] = useState(null);
+const AppContent = ({ userLocation, setUserLocation }) => {
+  const location = useLocation();
 
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
@@ -25,37 +31,78 @@ function App() {
     );
   };
 
+  // Define routes where LogoutButton should NOT appear
+  const publicRoutes = ['/', '/login', '/signup'];
+  const hideLogout = publicRoutes.includes(location.pathname);
+
   return (
-    <Router>
+    <div>
+      {!hideLogout && <LogoutButton />}
+
       <div className="App" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
-        <button
-          onClick={handleGetLocation}
-          style={{
-            marginBottom: "20px",
-            padding: "10px 16px",
-            borderRadius: "6px",
-            backgroundColor: "#007BFF",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Get location
-        </button>
-
-        <nav className = "nav-links">
-          <Link to="/" className="nav-button">Sort by Distance</Link>
-          
-          <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
-        </nav>
-
         <Routes>
-          <Route path="/" element={<FuelListDistance userLocation={userLocation} />} />
-          <Route path="/volume" element={<FuelListVolume userLocation={userLocation} />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          <Route
+            path="/distance"
+            element={
+              <PrivateRoute>
+                <>
+                  <button
+                    onClick={handleGetLocation}
+                    className="nav-button"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    Get location
+                  </button>
+                  <nav className="nav-links">
+                    <Link to="/distance" className="nav-button">Sort by Distance</Link>
+                    <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
+                  </nav>
+                  <FuelListDistance userLocation={userLocation} />
+                </>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/volume"
+            element={
+              <PrivateRoute>
+                <>
+                  <button
+                    onClick={handleGetLocation}
+                    className="nav-button"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    Get location
+                  </button>
+                  <nav className="nav-links">
+                    <Link to="/distance" className="nav-button">Sort by Distance</Link>
+                    <Link to="/volume" className="nav-button">Sort by Max Volume</Link>
+                  </nav>
+                  <FuelListVolume userLocation={userLocation} />
+                </>
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
-    </Router>
+    </div>
+  );
+};
+
+function App() {
+  const [userLocation, setUserLocation] = useState(null);
+
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent userLocation={userLocation} setUserLocation={setUserLocation} />
+      </Router>
+    </AuthProvider>
   );
 }
 

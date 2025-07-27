@@ -34,7 +34,8 @@ const FuelListDistance = ({ userLocation }) => {
       <ul className="station-list">
         {stations.map((station, index) => (
           <li key={index} className="station-card">
-            <strong>{station.station_name}</strong> - {station.address} - ${station.price.toFixed(2)}
+            <strong>{station.station_name}</strong>
+            <div className="station-meta">{station.address} - ${station.price.toFixed(2)}</div>
             <div className="station-meta">
               Distance: {station.distance_text} ({station.duration_text})
             </div>
