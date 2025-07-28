@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchDistanceOnly } from '../api/distanceOnly';
-import {getNearestStation, calculateCentDifference} from '../utils/savings';
 import '../styles/FuelList.css';
+import { getNearestStation, calculateCentDifference } from '../utils/savings';
 
 const FuelListDistance = ({ userLocation }) => {
   const [stations, setStations] = useState([]);
-
 
   useEffect(() => {
     if (userLocation) {
@@ -14,9 +13,10 @@ const FuelListDistance = ({ userLocation }) => {
           const filtered = data.filter(station => station.distance !== null);
           const sorted = [...filtered].sort((a, b) => a.distance - b.distance);
           const nearest = getNearestStation(filtered);
+          const refPrice = nearest.price;
 
           const updated = sorted.map((station) => {
-            const centsSaved = calculateCentDifference(nearest.price, station.price);
+            const centsSaved = calculateCentDifference(refPrice, station.price);
             return { ...station, centsSaved };
           });
 
@@ -27,7 +27,6 @@ const FuelListDistance = ({ userLocation }) => {
         });
     }
   }, [userLocation]);
-
 
   const handleGetDirections = (lat, lng) => {
     const origin = `${userLocation.lat},${userLocation.lng}`;
@@ -44,13 +43,17 @@ const FuelListDistance = ({ userLocation }) => {
         {stations.map((station, index) => (
           <li key={index} className="station-card">
             <strong>{station.station_name}</strong>
-            <div className="station-meta">{station.address} - ${station.price.toFixed(2)}</div>
-            {station.centsSaved && (
-              <div className='station-meta savings-text'>{station.centsSaved}</div>
-            )}
+            <div className="station-meta">
+              {station.address} - ${station.price.toFixed(2)}
+            </div>
             <div className="station-meta">
               Distance: {station.distance_text} ({station.duration_text})
             </div>
+            {station.centsSaved && (
+              <div className="station-meta savings-text">
+                {station.centsSaved} than the closest petrol station
+              </div>
+            )}
             <button
               className="directions-button"
               onClick={() => handleGetDirections(station.lat, station.lng)}

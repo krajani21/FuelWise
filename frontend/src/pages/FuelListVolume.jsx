@@ -17,10 +17,10 @@ const FuelListVolume = ({ userLocation }) => {
         .then((data) => {
           const filtered = data.filter(station => station.fuel_volume !== null);
           const sorted = [...filtered].sort((a, b) => b.fuel_volume - a.fuel_volume);
-          const nearest = getNearestStation(filtered);
+          const nearest = filtered.reduce((a, b) => a.distance < b.distance ? a: b);
 
-          const litres = nearest.fuel_volume;
           const refPrice = nearest.price;
+          const litres = submittedAmount / refPrice ;
 
           const updated = sorted.map((station) => {
             const savings = calculateDollarSavings(refPrice, station.price, litres);
@@ -91,7 +91,7 @@ const FuelListVolume = ({ userLocation }) => {
             </div>
             {station.savings && (
               <div className="station-meta savings-text">
-                Save ${station.savings.toFixed(2)} compared to nearest station
+                Save ${station.savings} compared to nearest gas station
               </div>
             )}
             <button
