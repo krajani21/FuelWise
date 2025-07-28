@@ -5,7 +5,7 @@ export const getNearestStation = (stations) => {
 };
 
 export const calculateDollarSavings = (refPrice, targetPrice, litres) => {
-  const savings = (refPrice - targetPrice) * litres / 100; // cents to dollars
+  const savings = (refPrice - targetPrice) * litres; 
   return savings > 0 ? savings.toFixed(2) : null;
 };
 
