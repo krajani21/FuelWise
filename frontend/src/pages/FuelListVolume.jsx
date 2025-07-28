@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchVolumeBased } from '../api/volumeBased';
-import {getNearestStation, calculateDollarSavings} from '../utils/savings';
+import {calculateDollarSavings} from '../utils/savings';
 import '../styles/FuelList.css';
 
 const FuelListVolume = ({ userLocation }) => {
@@ -24,7 +24,8 @@ const FuelListVolume = ({ userLocation }) => {
 
           const updated = sorted.map((station) => {
             const savings = calculateDollarSavings(refPrice, station.price, litres);
-            return { ...station, savings };
+            const isReference = station.address === nearest.address;
+            return { ...station, savings, isReference };
           });
 
           setStations(updated);
@@ -89,9 +90,17 @@ const FuelListVolume = ({ userLocation }) => {
             <div className="station-volume">
               Max Volume: {station.fuel_volume.toFixed(2)} L
             </div>
-            {station.savings && (
+
+            {station.isReference && (
+              <div className="station-meta comparison-text">
+                nearest station used for comparison
+              </div>
+            )}
+
+
+            {station.savings && !station.isReference && (
               <div className="station-meta savings-text">
-                Save ${station.savings} compared to nearest gas station
+                Save ${station.savings} compared to nearest station
               </div>
             )}
             <button
