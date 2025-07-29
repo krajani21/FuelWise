@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchVolumeBased } from '../api/volumeBased';
+import {calculateDollarSavings} from '../utils/savings';
 import '../styles/FuelList.css';
 
 const FuelListVolume = ({ userLocation }) => {
@@ -9,20 +10,32 @@ const FuelListVolume = ({ userLocation }) => {
   const [submittedAmount, setSubmittedAmount] = useState(null);
   const [submittedEfficiency, setSubmittedEfficiency] = useState(null);
 
+
   useEffect(() => {
     if (userLocation && submittedAmount !== null && submittedEfficiency !== null) {
       fetchVolumeBased(userLocation, submittedAmount, submittedEfficiency)
         .then((data) => {
-          const sorted = data
-            .filter(station => station.fuel_volume !== null)
-            .sort((a, b) => b.fuel_volume - a.fuel_volume);
-          setStations(sorted);
+          const filtered = data.filter(station => station.fuel_volume !== null);
+          const sorted = [...filtered].sort((a, b) => b.fuel_volume - a.fuel_volume);
+          const nearest = filtered.reduce((a, b) => a.distance < b.distance ? a: b);
+
+          const refPrice = nearest.price;
+          const litres = submittedAmount / refPrice ;
+
+          const updated = sorted.map((station) => {
+            const savings = calculateDollarSavings(refPrice, station.price, litres);
+            const isReference = station.address === nearest.address;
+            return { ...station, savings, isReference };
+          });
+
+          setStations(updated);
         })
         .catch((err) => {
           console.error("Failed to fetch volume-based data:", err);
         });
     }
   }, [userLocation, submittedAmount, submittedEfficiency]);
+
 
   const handleSubmit = () => {
     setSubmittedAmount(parseFloat(fuelAmount));
@@ -77,6 +90,19 @@ const FuelListVolume = ({ userLocation }) => {
             <div className="station-volume">
               Max Volume: {station.fuel_volume.toFixed(2)} L
             </div>
+
+            {station.isReference && (
+              <div className="station-meta comparison-text">
+                nearest station used for comparison
+              </div>
+            )}
+
+
+            {station.savings && !station.isReference && (
+              <div className="station-meta savings-text">
+                Save ${station.savings} compared to nearest station
+              </div>
+            )}
             <button
               className="directions-button"
               onClick={() => handleGetDirections(station.lat, station.lng)}

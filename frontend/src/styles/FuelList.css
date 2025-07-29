@@ -140,3 +140,15 @@
   background-color: #0056b3;
   transform: translateY(-1px);
 }
+
+.savings-text {
+  color: #008000;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.comparison-text {
+  color: #f50707;
+  font-weight: 500;
+  margin-top: 4px;
+}
