@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import FuelListVolume from './pages/FuelListVolume';
-import FuelListDistance from './pages/fuelListDistance';
+import FuelListDistance from './pages/FuelListDistance';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import LogoutButton from './components/LogoutButton';

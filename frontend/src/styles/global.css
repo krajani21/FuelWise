@@ -1,77 +1,91 @@
-
+/* ---------- GLOBAL STYLING ---------- */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #000000;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='%23000000' cx='400' cy='400' r='600'/%3E%3Ccircle fill='%23230046' cx='400' cy='400' r='500'/%3E%3Ccircle fill='%232f0052' cx='400' cy='400' r='400'/%3E%3Ccircle fill='%233b075e' cx='400' cy='400' r='300'/%3E%3Ccircle fill='%2348156a' cx='400' cy='400' r='200'/%3E%3Ccircle fill='%23552277' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
+  background: linear-gradient(-45deg, #230046, #2f0052, #3b075e, #552277);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
   background-attachment: fixed;
-  background-size: cover;
   min-height: 100vh;
   color: #f0f0f0;
 }
 
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-
+/* ---------- LOGIN PAGE WRAPPER ---------- */
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f8f9fb, #e9ecf1);
   padding: 20px;
-  font-family: "Segoe UI", sans-serif;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-/* Card */
+/* ---------- LOGIN CARD ---------- */
 .login-card {
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 16px;
   padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   max-width: 400px;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Typography */
+/* ---------- TYPOGRAPHY ---------- */
 .login-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #111;
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffffff;
   text-align: center;
-  margin-bottom: 10px;
 }
 
 .login-label {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #dddddd;
 }
 
-/* Inputs */
+/* ---------- INPUTS ---------- */
 .login-input {
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: none;
+  border-radius: 10px;
   font-size: 15px;
-  transition: border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.login-input::placeholder {
+  color: #e0e0e0;
 }
 
 .login-input:focus {
-  border-color: #007bff;
-  outline: none;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Button */
+/* ---------- BUTTON ---------- */
 .login-button {
-  background-color: #111;
-  color: #fff;
+  background-color: #111111;
+  color: #ffffff;
   padding: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -79,18 +93,18 @@ body {
 }
 
 .login-button:hover {
-  background-color: #333;
+  background-color: #333333;
 }
 
-/* Error */
+/* ---------- ERROR ---------- */
 .login-error {
-  color: red;
+  color: #ff4d4d;
   font-size: 14px;
   text-align: center;
   margin-top: -10px;
 }
 
-/* Footer */
+/* ---------- FOOTER ---------- */
 .login-footer {
   text-align: center;
   margin-top: 10px;
@@ -98,7 +112,7 @@ body {
 
 .forgot-password {
   font-size: 14px;
-  color: #007bff;
+  color: #ccccff;
   text-decoration: none;
 }
 
@@ -106,22 +120,7 @@ body {
   text-decoration: underline;
 }
 
-/* Responsive */
-@media (max-width: 500px) {
-  .login-card {
-    padding: 30px 20px;
-  }
-
-  .login-title {
-    font-size: 20px;
-  }
-
-  .login-button {
-    font-size: 15px;
-  }
-}
-
-/* Landing Page */
+/* ---------- LANDING PAGE ---------- */
 .landing-card {
   align-items: center;
   text-align: center;
@@ -130,13 +129,13 @@ body {
 .landing-title {
   font-size: 26px;
   font-weight: 700;
-  color: #111;
+  color: #ffffff;
   margin-bottom: 12px;
 }
 
 .landing-subtitle {
   font-size: 16px;
-  color: #444;
+  color: #dddddd;
   margin-bottom: 24px;
   line-height: 1.5;
   max-width: 320px;
@@ -153,6 +152,7 @@ body {
   width: 100%;
 }
 
+/* ---------- LOGOUT BUTTON ---------- */
 .logout-button {
   position: fixed;
   top: 20px;
@@ -172,4 +172,19 @@ body {
 
 .logout-button:hover {
   background-color: #c9302c;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 500px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .login-title {
+    font-size: 22px;
+  }
+
+  .login-button {
+    font-size: 15px;
+  }
 }

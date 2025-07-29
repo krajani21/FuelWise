@@ -1,62 +1,65 @@
-/* Global Page Styling */
+/* ---------- GLOBAL CONTAINER ---------- */
 .page-container {
   padding: 40px 20px;
   max-width: 900px;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #f0f4ff, #e4e9f2);
+  color: #f0f0f0;
+  background: transparent;
+  backdrop-filter: blur(6px);
   min-height: 100vh;
 }
 
-/* Heading */
+/* ---------- HEADING ---------- */
 .heading {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 24px;
   text-align: center;
-  color: #222;
+  color: #ffffff;
 }
 
-/* Station List */
+/* ---------- STATION LIST ---------- */
 .station-list {
   list-style: none;
   padding: 0;
 }
 
-/* Station Cards */
+/* ---------- STATION CARDS ---------- */
 .station-card {
   padding: 20px 24px;
   margin-bottom: 20px;
-  border-radius: 12px;
-  background: #ffffff;
-  border-left: 6px solid #007BFF;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .station-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  transform: scale(1.015);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
 }
 
 .station-card strong {
   font-size: 1.2em;
-  color: #111;
+  color: #ffffff;
 }
 
 .station-meta {
   font-size: 0.95em;
-  color: #555;
+  color: #cccccc;
   margin-top: 6px;
 }
 
 .station-volume {
   font-size: 1em;
-  color: #222;
+  color: #eeeeee;
   margin-top: 8px;
 }
 
-/* Input + Button Group */
+/* ---------- INPUT + BUTTON GROUP ---------- */
 .input-group {
   display: flex;
   justify-content: center;
@@ -71,33 +74,44 @@
   align-items: center;
   gap: 6px;
   font-weight: 500;
+  color: #dddddd;
 }
 
 .input-group input {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 120px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
   font-size: 1em;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  outline: none;
 }
 
-.input-group button {
-  padding: 8px 18px;
-  border-radius: 6px;
-  background-color: #007BFF;
+.input-group input::placeholder {
+  color: #bbbbbb;
+}
+
+/* ---------- BUTTONS ---------- */
+.input-group button,
+.directions-button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: #111111;
   color: white;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: all 0.25s ease;
 }
 
-.input-group button:hover {
-  background-color: #0056c7;
-  transform: scale(1.03);
+.input-group button:hover,
+.directions-button:hover {
+  background-color: #2c2c2c;
+  transform: scale(1.04);
 }
 
-/* Navigation Links */
+/* ---------- NAV LINKS ---------- */
 .nav-links {
   display: flex;
   justify-content: center;
@@ -106,49 +120,54 @@
 }
 
 .nav-button {
-  background-color: #e9efff;
-  color: #007BFF;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   border: 1px solid transparent;
 }
 
 .nav-button:hover {
-  background-color: #007BFF;
-  color: white;
-  border: 1px solid #007BFF;
+  background-color: #ffffff;
+  color: #111;
+  border: 1px solid #ffffff;
 }
 
-/* Directions Button */
-.directions-button {
-  margin-top: 12px;
-  padding: 10px 16px;
-  font-size: 0.95em;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.directions-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-1px);
-}
-
+/* ---------- SAVINGS TEXT ---------- */
 .savings-text {
-  color: #008000;
-  font-weight: 500;
-  margin-top: 4px;
+  color: #00e676;
+  font-weight: 600;
+  margin-top: 6px;
 }
 
 .comparison-text {
-  color: #f50707;
-  font-weight: 500;
-  margin-top: 4px;
+  color: #ff4d4d;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 600px) {
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-group input,
+  .input-group button {
+    width: 100%;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-button {
+    width: 100%;
+    text-align: center;
+  }
 }
