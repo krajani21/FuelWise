@@ -20,10 +20,9 @@ const FuelListVolume = ({ userLocation }) => {
           const nearest = filtered.reduce((a, b) => a.distance < b.distance ? a: b);
 
           const refPrice = nearest.price;
-          const litres = submittedAmount / refPrice ;
 
           const updated = sorted.map((station) => {
-            const savings = calculateDollarSavings(refPrice, station.price, litres);
+            const savings = calculateDollarSavings(refPrice, station.price, station.fuel_volume);
             const isReference = station.address === nearest.address;
             return { ...station, savings, isReference };
           });
