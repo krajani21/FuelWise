@@ -4,6 +4,9 @@ const dotenv = require("dotenv");
 const volumeBasedRoutes = require("./routes/volumeBasedRoutes")
 const distanceOnlyRoutes = require("./routes/distanceOnlyRoutes");
 const authRoutes = require("./routes/authRoutes")
+const recentSearchRoutes = require("./routes/recentSearchRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const vehicleRoutes = require("./routes/vehicleRoutes");
 const cors = require("cors");
 const verifyToken = require("./middleware/authMiddleware");
 
@@ -29,6 +32,9 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use("/api/auth", authRoutes);//handle authentication logic
 app.use("/api/volume-based", volumeBasedRoutes);//handle volume based logic
 app.use("/api/distances-only", distanceOnlyRoutes)
+app.use("/api/recent-searches", recentSearchRoutes);//handle recent searches
+app.use("/api/profile", profileRoutes);//handle user profile management
+app.use("/api/vehicles", vehicleRoutes);//handle vehicle data and validation
 
 app.get("/api/protected", verifyToken, (req, res) =>{
   res.json( {message: "you are now authorised", userId: req.user.id})

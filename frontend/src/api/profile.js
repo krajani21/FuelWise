@@ -1,0 +1,76 @@
+const API_BASE_URL = 'http://localhost:5000/api';
+
+// Helper function to get auth token
+const getAuthToken = () => {
+  return localStorage.getItem('token');
+};
+
+// Helper function to create auth headers
+const getAuthHeaders = () => {
+  const token = getAuthToken();
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  };
+};
+
+// Get user's profile
+export const fetchUserProfile = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/profile`, {
+      method: 'GET',
+      headers: getAuthHeaders()
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+      throw new Error(errorData.error || 'Failed to fetch user profile');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    throw error;
+  }
+};
+
+// Update user's profile
+export const updateUserProfile = async (profileData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/profile`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(profileData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to update profile');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    throw error;
+  }
+};
+
+// Get available gas station brands
+export const fetchGasStationBrands = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/profile/brands`, {
+      method: 'GET',
+      headers: getAuthHeaders()
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+      throw new Error(errorData.error || 'Failed to fetch gas station brands');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching gas station brands:', error);
+    throw error;
+  }
+};
