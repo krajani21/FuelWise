@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Lock, UserPlus, Fuel } from 'lucide-react';
 import ProfileSetup from "./ProfileSetup";
+import { API_BASE_URL } from '../config/api';
 
 const Signup = () => {
   const { login } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

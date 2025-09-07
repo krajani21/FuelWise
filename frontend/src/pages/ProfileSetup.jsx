@@ -4,6 +4,7 @@ import { Car, Star, Save, CheckCircle, ArrowRight } from 'lucide-react';
 import { fetchVehicleMakes, fetchVehicleModels, fetchVehicleYears, fetchTankCapacity } from '../api/vehicles';
 import { fetchGasStationBrands } from '../api/profile';
 import SearchableSelect from '../components/SearchableSelect';
+import { API_BASE_URL } from '../config/api';
 
 const ProfileSetup = ({ onComplete }) => {
   const navigate = useNavigate();
@@ -225,7 +226,7 @@ const ProfileSetup = ({ onComplete }) => {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/profile', {
+      const response = await fetch(`${API_BASE_URL}/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
