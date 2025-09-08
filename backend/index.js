@@ -18,7 +18,19 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());//cors should go after defining the app, it causes an error if placed before
+
+// CORS configuration to allow requests from frontend
+const corsOptions = {
+  origin: [
+    'https://fuel-wise.vercel.app', // Production frontend URL
+    'http://localhost:3000', // Local development
+    'http://localhost:3001' // Alternative local port
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
