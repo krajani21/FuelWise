@@ -2,7 +2,7 @@
 
 🚀 **Live Demo**  
 Try it out now and start saving on fuel:  
-[[https://fuel-frontend-ten.vercel.app/](https://fuel-frontend-ten.vercel.app/)](https://fuel-wise.vercel.app/)
+https://fuel-wise.vercel.app/
 
 📝 **Design Document**  
 **Author:** Krish Rajani
