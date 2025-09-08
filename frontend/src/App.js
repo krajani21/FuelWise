@@ -21,6 +21,7 @@ import FuelListDistance from './pages/FuelListDistance';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
+import LandingPage from './pages/LandingPage';
 import LogoutButton from './components/LogoutButton';
 import PrivateRoute from './routes/PrivateRoute';
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -45,7 +46,7 @@ const getTimeAgo = (timestamp) => {
 const AppContent = ({ userLocation, setUserLocation }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isLoading } = useContext(AuthContext);
+  const { isLoading, isAuthenticated } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [fuelAmount, setFuelAmount] = useState('');
   const [fuelEfficiency, setFuelEfficiency] = useState('');
@@ -379,7 +380,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
 
   // Define routes where LogoutButton should NOT appear
   const publicRoutes = ['/login', '/signup'];
-  const hideLogout = publicRoutes.includes(location.pathname);
+  const hideLogout = publicRoutes.includes(location.pathname) || !isAuthenticated;
 
   // Show loading screen while validating authentication
   if (isLoading) {
@@ -395,8 +396,9 @@ const AppContent = ({ userLocation, setUserLocation }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-[#003366] text-white shadow-lg relative z-50">
+      {/* Navigation - only show when authenticated */}
+      {isAuthenticated && (
+        <nav className="bg-[#003366] text-white shadow-lg relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
@@ -406,27 +408,33 @@ const AppContent = ({ userLocation, setUserLocation }) => {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
-              <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
-              <button 
-                onClick={startOnboardingGuide}
-                className="flex items-center space-x-1 hover:text-[#4CAF50] transition-colors duration-200"
-              >
-                <HelpCircle className="h-4 w-4" />
-                <span>Guide</span>
-              </button>
+              {isAuthenticated && (
+                <>
+                  <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+                  <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
+                  <button 
+                    onClick={startOnboardingGuide}
+                    className="flex items-center space-x-1 hover:text-[#4CAF50] transition-colors duration-200"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                    <span>Guide</span>
+                  </button>
+                </>
+              )}
               {!hideLogout && <LogoutButton />}
             </div>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-white hover:text-[#4CAF50] transition-colors duration-200"
-              >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
+            {/* Mobile menu button - only show when authenticated */}
+            {isAuthenticated && (
+              <div className="md:hidden">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="text-white hover:text-[#4CAF50] transition-colors duration-200"
+                >
+                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -434,18 +442,22 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-[#003366] border-t border-blue-700 shadow-lg">
             <div className="px-4 pt-2 pb-4 space-y-2">
-              <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
-              <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
-              <button 
-                onClick={() => {
-                  startOnboardingGuide();
-                  setIsMenuOpen(false);
-                }}
-                className="flex items-center space-x-2 py-2 hover:text-[#4CAF50] transition-colors duration-200"
-              >
-                <HelpCircle className="h-4 w-4" />
-                <span>Guide</span>
-              </button>
+              {isAuthenticated && (
+                <>
+                  <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+                  <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
+                  <button 
+                    onClick={() => {
+                      startOnboardingGuide();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-2 py-2 hover:text-[#4CAF50] transition-colors duration-200"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                    <span>Guide</span>
+                  </button>
+                </>
+              )}
               {!hideLogout && (
                 <div className="pt-2">
                   <LogoutButton />
@@ -454,7 +466,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
             </div>
           </div>
         )}
-      </nav>
+        </nav>
+      )}
 
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -482,8 +495,10 @@ const AppContent = ({ userLocation, setUserLocation }) => {
           </PrivateRoute>
         } />
 
+        {/* Root route - show landing page for unauthenticated users, main app for authenticated users */}
         <Route path="/" element={
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          isAuthenticated ? (
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-[#003366] to-blue-800 rounded-2xl text-white p-8 mb-8 shadow-xl">
               <div className="text-center">
@@ -775,6 +790,9 @@ const AppContent = ({ userLocation, setUserLocation }) => {
               </div>
             </div>
           </main>
+          ) : (
+            <LandingPage />
+          )
         } />
       </Routes>
     </div>
