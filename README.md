@@ -66,23 +66,4 @@ FuelWise is a full-stack web app that helps users find the most cost-effective f
 
 ---
 
-## Next Steps
-
-1. Finalize auth flows (including loading states and error handling).
-2. Refactor UI components and simplify global styling.
-3. Implement radius-based station filtering.
-4. Extend the data model to include fuel types.
-5. Test mobile usability and optimize performance.
-
----
-
-## Notes
-
-- Prioritize speed and simplicity in UX.
-- Securely handle user tokens.
-- Consider caching frequent station data to reduce API calls.
-- Add loading spinners for slow responses.
-
----
-
 **End of Document**
