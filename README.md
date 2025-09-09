@@ -15,7 +15,7 @@ FuelWise is a full-stack web app that helps users find the most cost-effective f
 
 ---
 
-## Core Features (Implemented)
+## Core Features
 
 ### 1. **Location-Aware Fuel Station Listing**
 
@@ -46,22 +46,6 @@ FuelWise is a full-stack web app that helps users find the most cost-effective f
   - Buttons (e.g., “Sort”, “Get Directions”).
   - Headers and mobile spacing.
 - Apply consistent theming across components.
-
----
-
-## Features to Be Implemented
-
-
-### 1. **Search Radius Filter**
-
-- Add input/slider for users to set a search radius (e.g., 5 km, 10 km).
-- Backend filters stations accordingly using the Places API.
-
-### 2. **Display of Fuel Types**
-
-- Show available fuel types (Regular, Premium, Diesel).
-- Update API to support price data per fuel type.
-- Frontend UI with dropdown or tabs for toggling fuel types.
 
 ---
 
