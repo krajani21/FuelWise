@@ -74,3 +74,27 @@ export const fetchGasStationBrands = async () => {
     throw error;
   }
 };
+
+// Update user's country based on coordinates
+export const updateUserCountry = async (lat, lng) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/profile/country`, {
+      method: 'POST',
+      headers: {
+        ...getAuthHeaders(),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ lat, lng })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Network error' }));
+      throw new Error(errorData.error || 'Failed to update country');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating country:', error);
+    throw error;
+  }
+};

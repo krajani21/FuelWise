@@ -45,6 +45,11 @@ const userProfileSchema = new mongoose.Schema({
       }
     }
   },
+  country: {
+    type: String,
+    enum: ['US', 'CA', 'UK', 'AU', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'CH', 'AT', 'SE', 'NO', 'DK', 'FI', 'PL', 'CZ', 'HU', 'SK', 'SI', 'HR', 'BG', 'RO', 'LT', 'LV', 'EE', 'IE', 'PT', 'GR', 'CY', 'MT', 'LU', 'IS', 'LI', 'MC', 'SM', 'VA', 'AD', 'Other'],
+    default: 'US'
+  },
   preferences: {
     preferredBrands: [{
       type: String,
@@ -61,6 +66,17 @@ const userProfileSchema = new mongoose.Schema({
         'Co-op',
         'Mohawk',
         'Pioneer',
+        'Exxon',
+        'Mobil',
+        'BP',
+        'Sam\'s Club',
+        '7-Eleven',
+        'Speedway',
+        'Circle K',
+        'Valero',
+        'Phillips 66',
+        'Marathon',
+        'Sunoco',
         'Other'
       ]
     }]

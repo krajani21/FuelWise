@@ -33,6 +33,42 @@ export const isPreferredStation = (station, preferredBrands) => {
       stationBrand = 'Hughes';
     } else if (stationBrand.includes('Domo')) {
       stationBrand = 'Domo';
+    } else if (stationBrand.includes('Exxon')) {
+      stationBrand = 'Exxon';
+    } else if (stationBrand.includes('Mobil')) {
+      stationBrand = 'Mobil';
+    } else if (stationBrand.includes('BP')) {
+      stationBrand = 'BP';
+    } else if (stationBrand.includes('Sam\'s Club') || stationBrand.includes('Sams Club')) {
+      stationBrand = 'Sam\'s Club';
+    } else if (stationBrand.includes('7-Eleven') || stationBrand.includes('7 Eleven')) {
+      stationBrand = '7-Eleven';
+    } else if (stationBrand.includes('Speedway')) {
+      stationBrand = 'Speedway';
+    } else if (stationBrand.includes('Circle K')) {
+      stationBrand = 'Circle K';
+    } else if (stationBrand.includes('Valero')) {
+      stationBrand = 'Valero';
+    } else if (stationBrand.includes('Phillips 66') || stationBrand.includes('Phillips66')) {
+      stationBrand = 'Phillips 66';
+    } else if (stationBrand.includes('Marathon')) {
+      stationBrand = 'Marathon';
+    } else if (stationBrand.includes('Sunoco')) {
+      stationBrand = 'Sunoco';
+    } else if (stationBrand.includes('Costco')) {
+      stationBrand = 'Costco';
+    } else if (stationBrand.includes('Canadian Tire')) {
+      stationBrand = 'Canadian Tire';
+    } else if (stationBrand.includes('Ultramar')) {
+      stationBrand = 'Ultramar';
+    } else if (stationBrand.includes('Fas Gas')) {
+      stationBrand = 'Fas Gas';
+    } else if (stationBrand.includes('Co-op')) {
+      stationBrand = 'Co-op';
+    } else if (stationBrand.includes('Mohawk')) {
+      stationBrand = 'Mohawk';
+    } else if (stationBrand.includes('Pioneer')) {
+      stationBrand = 'Pioneer';
     }
   }
   

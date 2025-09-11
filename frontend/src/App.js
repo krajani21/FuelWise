@@ -16,6 +16,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { fetchRecentSearches, saveRecentSearch } from './api/recentSearches';
+import { updateUserCountry } from './api/profile';
 import FuelListVolume from './pages/FuelListVolume';
 import FuelListDistance from './pages/FuelListDistance';
 import Login from './pages/Login';
@@ -199,7 +200,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     };
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const coords = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -207,6 +208,19 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         setUserLocation(coords);
         setLocationStatus('success');
         console.log("user location: ", coords);
+        
+        // Auto-detect country and update user profile
+        try {
+          const token = localStorage.getItem('token');
+          if (token) {
+            const countryData = await updateUserCountry(coords.lat, coords.lng);
+            console.log("Country detected:", countryData.country);
+            console.log("Available brands:", countryData.brands);
+          }
+        } catch (error) {
+          console.error("Error updating country:", error);
+          // Don't fail the location process if country detection fails
+        }
         
         // Progress onboarding to next step
         if (showOnboarding && onboardingStep === 1) {
