@@ -595,9 +595,9 @@ const AppContent = ({ userLocation, setUserLocation }) => {
 
 
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="flex justify-center">
               {/* Main Search Form */}
-              <div className="lg:col-span-2">
+              <div className="w-full max-w-2xl">
                 <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
                   <h2 className="text-2xl font-bold text-[#333333] mb-6">Find Your Best Deal</h2>
                   
