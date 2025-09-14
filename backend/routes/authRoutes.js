@@ -27,11 +27,26 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("Login attempt for email:", email);
+    
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password)))
+    console.log("User found:", !!user);
+    
+    if (!user) {
+      console.log("No user found with email:", email);
       return res.status(401).json({ error: "Invalid credentials" });
+    }
+    
+    const passwordMatch = await user.comparePassword(password);
+    console.log("Password match:", passwordMatch);
+    
+    if (!passwordMatch) {
+      console.log("Password doesn't match for user:", email);
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    console.log("Login successful for user:", email);
     res.json({ token });
   } catch (err) {
     console.error("Login error:", err);
