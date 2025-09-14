@@ -771,41 +771,6 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 </div>
               </div>
 
-              {/* Promotional Banners */}
-              <div className="space-y-6">
-                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 rounded-xl shadow-lg">
-                  <div className="flex items-center mb-3">
-                    <Tag className="h-5 w-5 mr-2" />
-                    <h3 className="text-lg font-bold">Shell Station</h3>
-                  </div>
-                  <p className="mb-4">Get 15% off your next fill-up with our exclusive partnership deal!</p>
-                  <button className="bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
-                    View Deal
-                  </button>
-                </div>
-
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-xl shadow-lg">
-                  <div className="flex items-center mb-3">
-                    <Tag className="h-5 w-5 mr-2" />
-                    <h3 className="text-lg font-bold">ExxonMobil</h3>
-                  </div>
-                  <p className="mb-4">Premium members save an extra $0.10 per gallon every Tuesday!</p>
-                  <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
-                    Join Now
-                  </button>
-                </div>
-
-                <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white p-6 rounded-xl shadow-lg">
-                  <div className="flex items-center mb-3">
-                    <Tag className="h-5 w-5 mr-2" />
-                    <h3 className="text-lg font-bold">BP Station</h3>
-                  </div>
-                  <p className="mb-4">Refer a friend and both get $5 off your next fuel purchase!</p>
-                  <button className="bg-white text-green-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
-                    Refer Friend
-                  </button>
-                </div>
-              </div>
             </div>
           </main>
           ) : (
