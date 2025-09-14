@@ -21,6 +21,8 @@ import FuelListVolume from './pages/FuelListVolume';
 import FuelListDistance from './pages/FuelListDistance';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import LandingPage from './pages/LandingPage';
 import LogoutButton from './components/LogoutButton';
@@ -393,7 +395,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
   }, []);
 
   // Define routes where LogoutButton should NOT appear
-  const publicRoutes = ['/login', '/signup'];
+  const publicRoutes = ['/login', '/signup', '/forgot-password', '/reset-password'];
   const hideLogout = publicRoutes.includes(location.pathname) || !isAuthenticated;
 
   // Show loading screen while validating authentication
@@ -486,6 +488,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         
         <Route path="/distance" element={
           <PrivateRoute>
