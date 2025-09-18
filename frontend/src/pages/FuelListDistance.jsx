@@ -57,32 +57,10 @@ const FuelListDistance = ({ userLocation }) => {
       setAreaStats(null); // Clear previous area stats
       fetchDistanceOnly(userLocation, searchParams?.radius || 5, userFuelType)
         .then((data) => {
-          console.log("Raw API data:", data);
-          
-          // Check if we have any stations before proceeding
-          if (!data || data.length === 0) {
-            console.log("No data or empty array received");
-            setStations([]);
-            setAreaStats(null);
-            setIsLoading(false);
-            return;
-          }
-          
-          // Filter stations that have valid distance data for sorting
-          const stationsWithDistance = data.filter(station => station.distance !== null);
-          console.log("Stations with distance:", stationsWithDistance.length, "out of", data.length);
-          
-          // Use preferred brand sorting for stations with distance data
-          const sorted = stationsWithDistance.length > 0 
-            ? sortByDistanceWithPreferred(stationsWithDistance, preferredBrands)
-            : data; // If no distance data, just use original order
-          
-          // Find nearest station for price comparison (use first station if no distance data)
-          const nearest = stationsWithDistance.length > 0 
-            ? getNearestStation(stationsWithDistance)
-            : data[0];
-          
-          console.log("Nearest station:", nearest);
+          const filtered = data.filter(station => station.distance !== null);
+          // Use preferred brand sorting instead of simple distance sorting
+          const sorted = sortByDistanceWithPreferred(filtered, preferredBrands);
+          const nearest = getNearestStation(filtered);
           const refPrice = nearest.price;
 
           const updated = sorted.map((station) => {
@@ -92,10 +70,8 @@ const FuelListDistance = ({ userLocation }) => {
 
           setStations(updated);
           
-          // Calculate and set area statistics (use stations with distance data if available)
-          const stats = stationsWithDistance.length > 0 
-            ? calculateAreaStatistics(stationsWithDistance)
-            : null;
+          // Calculate and set area statistics
+          const stats = calculateAreaStatistics(filtered);
           setAreaStats(stats);
           setIsLoading(false);
         })
