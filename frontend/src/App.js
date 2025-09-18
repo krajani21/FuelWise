@@ -185,28 +185,6 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     }
   };
 
-  // Test locations for US fuel stations
-  const testLocations = {
-    'New York': { lat: 40.7128, lng: -74.0060 },
-    'Los Angeles': { lat: 34.0522, lng: -118.2437 },
-    'Chicago': { lat: 41.8781, lng: -87.6298 },
-    'Houston': { lat: 29.7604, lng: -95.3698 }
-  };
-
-  const handleTestLocation = (cityName) => {
-    const coords = testLocations[cityName];
-    setUserLocation(coords);
-    setLocationStatus('success');
-    console.log(`Test location set to ${cityName}:`, coords);
-    
-    // Progress onboarding to next step
-    if (showOnboarding && onboardingStep === 1) {
-      setTimeout(() => {
-        setOnboardingStep(2);
-      }, 1000);
-    }
-  };
-
   const handleGetLocation = () => {
     setLocationStatus('loading');
     
@@ -548,42 +526,24 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 <p className="text-lg mb-6 opacity-90">
                   Find the best fuel prices near you and save money on every fill-up
                 </p>
-                <div className="space-y-4">
-                  <button
-                    onClick={handleGetLocation}
-                    disabled={locationStatus === 'loading'}
-                    className={`bg-[#4CAF50] hover:bg-green-600 text-white px-8 py-3 rounded-lg font-semibold flex items-center space-x-2 mx-auto transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 ${
-                      showOnboarding && onboardingStep === 1 ? 'animate-bounce ring-4 ring-[#4CAF50] ring-opacity-30' : ''
-                    }`}
-                  >
-                    {locationStatus === 'loading' ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                    ) : (
-                      <Navigation className="h-5 w-5" />
-                    )}
-                    <span>
-                      {locationStatus === 'loading' ? 'Getting Location...' : 
-                       locationStatus === 'success' ? 'Location Found!' :
-                       locationStatus === 'error' ? 'Try Again' : 'Get Location'}
-                    </span>
-                  </button>
-                  
-                  {/* Test buttons for US locations */}
-                  <div className="text-center">
-                    <p className="text-sm text-white/70 mb-2">Test with US locations:</p>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {Object.keys(testLocations).map(city => (
-                        <button
-                          key={city}
-                          onClick={() => handleTestLocation(city)}
-                          className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-sm font-medium transition-all duration-200"
-                        >
-                          {city}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <button
+                  onClick={handleGetLocation}
+                  disabled={locationStatus === 'loading'}
+                  className={`bg-[#4CAF50] hover:bg-green-600 text-white px-8 py-3 rounded-lg font-semibold flex items-center space-x-2 mx-auto transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 ${
+                    showOnboarding && onboardingStep === 1 ? 'animate-bounce ring-4 ring-[#4CAF50] ring-opacity-30' : ''
+                  }`}
+                >
+                  {locationStatus === 'loading' ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                  ) : (
+                    <Navigation className="h-5 w-5" />
+                  )}
+                  <span>
+                    {locationStatus === 'loading' ? 'Getting Location...' : 
+                     locationStatus === 'success' ? 'Location Found!' :
+                     locationStatus === 'error' ? 'Try Again' : 'Get Location'}
+                  </span>
+                </button>
                 
               </div>
             </div>
