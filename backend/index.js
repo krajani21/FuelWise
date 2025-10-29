@@ -23,6 +23,7 @@ app.use(express.json());
 const corsOptions = {
   origin: [
     'https://fuel-wise.vercel.app', // Production frontend URL
+    'https://fuelwiseapp.com', // New production frontend URL
     'http://localhost:3000', // Local development
     'http://localhost:3001' // Alternative local port
   ],
