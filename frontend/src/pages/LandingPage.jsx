@@ -38,7 +38,7 @@ const LandingPage = () => (
       {/* Action Buttons */}
       <div className="space-y-4">
         <Link
-          to="/"
+          to="/search"
           className="w-full bg-[#4CAF50] hover:bg-green-600 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
         >
           <Fuel className="h-5 w-5" />

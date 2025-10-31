@@ -96,7 +96,7 @@ const FuelListDistance = ({ userLocation }) => {
       efficiency: searchParams?.efficiency?.toString() || '',
       radius: searchParams?.radius?.toString() || '5'
     });
-    navigate(`/?${params.toString()}`);
+    navigate(`/search?${params.toString()}`);
   };
 
   return (

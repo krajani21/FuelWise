@@ -184,7 +184,7 @@ const FuelListVolume = ({ userLocation }) => {
       efficiency: submittedEfficiency?.toString() || '',
       radius: radius || '5'
     });
-    navigate(`/?${params.toString()}`);
+    navigate(`/search?${params.toString()}`);
   };
 
   return (

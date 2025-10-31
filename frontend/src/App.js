@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { 
   MapPin, 
   Navigation, 
@@ -89,7 +89,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     const hasCompletedOnboarding = localStorage.getItem('fuelwise-onboarding-completed');
     
     // Show onboarding for first-time users (no completed onboarding)
-    if (!hasCompletedOnboarding && location.pathname === '/') {
+    if (!hasCompletedOnboarding && location.pathname === '/search') {
       setTimeout(() => {
         setShowOnboarding(true);
       }, 1000); // Show after 1 second delay
@@ -407,14 +407,14 @@ const AppContent = ({ userLocation, setUserLocation }) => {
       <nav className="bg-[#003366] text-white shadow-lg relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
+            <Link to={isAuthenticated ? "/search" : "/"} className="flex items-center space-x-2">
               <Fuel className="h-8 w-8 text-[#4CAF50]" />
               <span className="text-xl font-bold">FuelWise</span>
-            </div>
+            </Link>
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/search" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
               {isAuthenticated && (
                 <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
@@ -451,7 +451,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-[#003366] border-t border-blue-700 shadow-lg">
             <div className="px-4 pt-2 pb-4 space-y-2">
-              <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/search" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
               {isAuthenticated && (
                 <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
@@ -506,8 +506,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
           </PrivateRoute>
         } />
 
-        {/* Root route - main app for all users */}
-        <Route path="/" element={
+        {/* Main app route */}
+        <Route path="/search" element={
           <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Guest Mode Banner */}
             {!isAuthenticated && (
@@ -791,7 +791,14 @@ const AppContent = ({ userLocation, setUserLocation }) => {
           </main>
         } />
         
-        <Route path="/welcome" element={<LandingPage />} />
+        {/* Root route - landing page for guests, redirect to search for authenticated */}
+        <Route path="/" element={
+          isAuthenticated ? (
+            <Navigate to="/search" replace />
+          ) : (
+            <LandingPage />
+          )
+        } />
       </Routes>
     </div>
   );
