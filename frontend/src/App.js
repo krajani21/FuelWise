@@ -81,8 +81,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     };
 
     // Only load searches if user is authenticated
-    const token = localStorage.getItem('token');
-    if (token) {
+    if (isAuthenticated) {
       loadRecentSearches();
     }
 
@@ -95,7 +94,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         setShowOnboarding(true);
       }, 1000); // Show after 1 second delay
     }
-  }, [location.pathname]);
+  }, [location.pathname, isAuthenticated]);
 
   // Close mobile menu when navigating to a different page
   useEffect(() => {
@@ -147,6 +146,11 @@ const AppContent = ({ userLocation, setUserLocation }) => {
 
   // Function to add a new search to recent searches
   const addToRecentSearches = async (searchData) => {
+    // Only save to backend if user is authenticated
+    if (!isAuthenticated) {
+      return;
+    }
+    
     try {
       const newSearch = await saveRecentSearch({
         amount: searchData.amount,
@@ -170,18 +174,6 @@ const AppContent = ({ userLocation, setUserLocation }) => {
       });
     } catch (error) {
       console.error('Error saving recent search:', error);
-      // Still try to save locally as fallback
-      const timestamp = new Date().toISOString();
-      const fallbackSearch = {
-        id: Date.now(),
-        amount: searchData.amount,
-        efficiency: searchData.efficiency,
-        location: searchData.location || 'Current Location',
-        timestamp: timestamp,
-        timeAgo: getTimeAgo(timestamp)
-      };
-      
-      setRecentSearches(prevSearches => [fallbackSearch, ...prevSearches].slice(0, 3));
     }
   };
 
@@ -211,17 +203,16 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         setLocationStatus('success');
         console.log("user location: ", coords);
         
-        // Auto-detect country and update user profile
-        try {
-          const token = localStorage.getItem('token');
-          if (token) {
+        // Auto-detect country and update user profile (only if authenticated)
+        if (isAuthenticated) {
+          try {
             const countryData = await updateUserCountry(coords.lat, coords.lng);
             console.log("Country detected:", countryData.country);
             console.log("Available brands:", countryData.brands);
+          } catch (error) {
+            console.error("Error updating country:", error);
+            // Don't fail the location process if country detection fails
           }
-        } catch (error) {
-          console.error("Error updating country:", error);
-          // Don't fail the location process if country detection fails
         }
         
         // Progress onboarding to next step
@@ -412,9 +403,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation - only show when authenticated */}
-      {isAuthenticated && (
-        <nav className="bg-[#003366] text-white shadow-lg relative z-50">
+      {/* Navigation */}
+      <nav className="bg-[#003366] text-white shadow-lg relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
@@ -424,33 +414,36 @@ const AppContent = ({ userLocation, setUserLocation }) => {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
               {isAuthenticated && (
+                <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
+              )}
+              <button 
+                onClick={startOnboardingGuide}
+                className="flex items-center space-x-1 hover:text-[#4CAF50] transition-colors duration-200"
+              >
+                <HelpCircle className="h-4 w-4" />
+                <span>Guide</span>
+              </button>
+              {isAuthenticated ? (
+                !hideLogout && <LogoutButton />
+              ) : (
                 <>
-                  <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
-                  <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
-                  <button 
-                    onClick={startOnboardingGuide}
-                    className="flex items-center space-x-1 hover:text-[#4CAF50] transition-colors duration-200"
-                  >
-                    <HelpCircle className="h-4 w-4" />
-                    <span>Guide</span>
-                  </button>
+                  <Link to="/login" className="hover:text-[#4CAF50] transition-colors duration-200">Login</Link>
+                  <Link to="/signup" className="bg-[#4CAF50] hover:bg-green-600 px-4 py-2 rounded-lg transition-colors duration-200">Sign Up</Link>
                 </>
               )}
-              {!hideLogout && <LogoutButton />}
             </div>
 
-            {/* Mobile menu button - only show when authenticated */}
-            {isAuthenticated && (
-              <div className="md:hidden">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="text-white hover:text-[#4CAF50] transition-colors duration-200"
-                >
-                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                </button>
-              </div>
-            )}
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-white hover:text-[#4CAF50] transition-colors duration-200"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -458,32 +451,36 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-[#003366] border-t border-blue-700 shadow-lg">
             <div className="px-4 pt-2 pb-4 space-y-2">
+              <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
               {isAuthenticated && (
-                <>
-                  <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
-                  <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
-                  <button 
-                    onClick={() => {
-                      startOnboardingGuide();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center space-x-2 py-2 hover:text-[#4CAF50] transition-colors duration-200"
-                  >
-                    <HelpCircle className="h-4 w-4" />
-                    <span>Guide</span>
-                  </button>
-                </>
+                <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
-              {!hideLogout && (
-                <div className="pt-2">
-                  <LogoutButton />
+              <button 
+                onClick={() => {
+                  startOnboardingGuide();
+                  setIsMenuOpen(false);
+                }}
+                className="flex items-center space-x-2 py-2 hover:text-[#4CAF50] transition-colors duration-200"
+              >
+                <HelpCircle className="h-4 w-4" />
+                <span>Guide</span>
+              </button>
+              {isAuthenticated ? (
+                !hideLogout && (
+                  <div className="pt-2">
+                    <LogoutButton />
+                  </div>
+                )
+              ) : (
+                <div className="pt-2 space-y-2">
+                  <Link to="/login" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Login</Link>
+                  <Link to="/signup" className="block bg-[#4CAF50] hover:bg-green-600 px-4 py-2 rounded-lg transition-colors duration-200 text-center">Sign Up</Link>
                 </div>
               )}
             </div>
           </div>
         )}
         </nav>
-      )}
 
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -492,19 +489,15 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         <Route path="/reset-password" element={<ResetPassword />} />
         
         <Route path="/distance" element={
-          <PrivateRoute>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <FuelListDistance userLocation={userLocation} />
-            </div>
-          </PrivateRoute>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <FuelListDistance userLocation={userLocation} />
+          </div>
         } />
         
         <Route path="/volume" element={
-          <PrivateRoute>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <FuelListVolume userLocation={userLocation} />
-            </div>
-          </PrivateRoute>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <FuelListVolume userLocation={userLocation} />
+          </div>
         } />
         
         <Route path="/profile" element={
@@ -513,10 +506,31 @@ const AppContent = ({ userLocation, setUserLocation }) => {
           </PrivateRoute>
         } />
 
-        {/* Root route - show landing page for unauthenticated users, main app for authenticated users */}
+        {/* Root route - main app for all users */}
         <Route path="/" element={
-          isAuthenticated ? (
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Guest Mode Banner */}
+            {!isAuthenticated && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-800 text-sm font-medium">
+                      You're using FuelWise as a guest
+                    </p>
+                    <p className="text-blue-600 text-xs mt-1">
+                      Sign up to save recent searches, vehicle info, and preferred gas stations
+                    </p>
+                  </div>
+                  <Link 
+                    to="/signup"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ml-4"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </div>
+            )}
+
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-[#003366] to-blue-800 rounded-2xl text-white p-8 mb-8 shadow-xl">
               <div className="text-center">
@@ -732,19 +746,20 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 </div>
 
                 {/* Recent Searches */}
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold text-[#333333] mb-4 flex items-center">
-                    <Clock className="h-5 w-5 mr-2 text-[#4CAF50]" />
-                    Recent Searches
-                  </h3>
-                  <div className="space-y-3">
-                    {recentSearches.length === 0 ? (
-                      <div className="text-center py-8 text-gray-500">
-                        <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                        <p>No recent searches yet</p>
-                        <p className="text-sm">Your search history will appear here</p>
-                      </div>
-                    ) : (
+                {isAuthenticated && (
+                  <div className="bg-white rounded-xl shadow-lg p-6">
+                    <h3 className="text-xl font-bold text-[#333333] mb-4 flex items-center">
+                      <Clock className="h-5 w-5 mr-2 text-[#4CAF50]" />
+                      Recent Searches
+                    </h3>
+                    <div className="space-y-3">
+                      {recentSearches.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">
+                          <Clock className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <p>No recent searches yet</p>
+                          <p className="text-sm">Your search history will appear here</p>
+                        </div>
+                      ) : (
                       recentSearches.map((search, index) => (
                         <div
                           key={search.id || index}
@@ -765,18 +780,18 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                             <span>Use Again</span>
                           </div>
                         </div>
-                      ))
-                    )}
+                        ))
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
             </div>
           </main>
-          ) : (
-            <LandingPage />
-          )
         } />
+        
+        <Route path="/welcome" element={<LandingPage />} />
       </Routes>
     </div>
   );

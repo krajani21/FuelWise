@@ -38,8 +38,16 @@ const LandingPage = () => (
       {/* Action Buttons */}
       <div className="space-y-4">
         <Link
-          to="/login"
+          to="/"
           className="w-full bg-[#4CAF50] hover:bg-green-600 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
+        >
+          <Fuel className="h-5 w-5" />
+          <span>Continue as Guest</span>
+        </Link>
+        
+        <Link
+          to="/login"
+          className="w-full bg-white hover:bg-gray-50 text-[#4CAF50] border-2 border-[#4CAF50] py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
         >
           <LogIn className="h-5 w-5" />
           <span>Sign In</span>
@@ -47,7 +55,7 @@ const LandingPage = () => (
         
         <Link
           to="/signup"
-          className="w-full bg-white hover:bg-gray-50 text-[#4CAF50] border-2 border-[#4CAF50] py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
+          className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
         >
           <UserPlus className="h-5 w-5" />
           <span>Create Account</span>
