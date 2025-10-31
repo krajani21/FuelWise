@@ -23,7 +23,7 @@ const corsOptions = {
   origin: [
     'https://fuel-wise.vercel.app', // Production frontend URL
     'https://fuelwiseapp.com', // New production frontend URL
-    'https://fuel-wise-s4qc.vercel.app/', // staging URL
+    'https://fuel-wise-s4qc.vercel.app', // staging URL
     'http://localhost:3000', // Local development
     'http://localhost:3001' // Alternative local port
   ],
