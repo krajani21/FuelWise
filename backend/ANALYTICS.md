@@ -210,4 +210,3 @@ curl http://localhost:5000/api/analytics/conversion
 - **Geographic patterns** - Popular search locations
 - **Time-of-day analysis** - Peak usage hours
 - **Export to CSV** - For external analysis
-
