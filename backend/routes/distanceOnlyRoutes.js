@@ -5,6 +5,7 @@ const { findBestFuelPrice, convertPriceToFloat } = require("../utils/fuelTypeMap
 const { normalizeSearchParams, generateCacheKey } = require("../utils/normalizeQuery");
 const { recordApiCall, recordNormalizedRequest } = require("../utils/metrics");
 const { collapseRequest } = require("../utils/requestCollapsing");
+const cache = require("../utils/cache");
 
 // Helper function to chunk array into smaller arrays
 const chunkArray = (array, chunkSize) => {
@@ -37,6 +38,12 @@ router.post("/", async (req, res) => {
     console.log("📏 Original radius:", req.body.radius, "km → Bucketed:", radius, "km");
     console.log("🔑 Cache Key:", cacheKey);
     console.log("===========================\n");
+
+    // Check cache first
+    const cachedResult = cache.get(cacheKey);
+    if (cachedResult) {
+      return res.json(cachedResult);
+    }
 
     // Collapse identical concurrent requests
     const finalStations = await collapseRequest(cacheKey, async () => {
@@ -187,6 +194,9 @@ router.post("/", async (req, res) => {
         };
       });
     }); // End of collapseRequest
+
+    // Cache the result (15 minutes TTL)
+    cache.set(cacheKey, finalStations, 900);
 
     res.json(finalStations);
   } catch (err) {

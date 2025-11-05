@@ -55,8 +55,12 @@ app.get("/api/protected", verifyToken, (req, res) =>{
 
 // Metrics endpoint (for monitoring normalization effectiveness)
 const { getMetrics, resetMetrics } = require("./utils/metrics");
+const cache = require("./utils/cache");
 app.get("/api/metrics", (req, res) => {
-  res.json(getMetrics());
+  res.json({
+    ...getMetrics(),
+    cache: cache.getStats()
+  });
 });
 app.post("/api/metrics/reset", (req, res) => {
   resetMetrics();
