@@ -66,12 +66,17 @@ const createAdaptiveRateLimiter = (options) => {
  * - Each search costs ~$0.50-0.66 in Google Maps API calls (without cache)
  * - With normalization + caching, actual API calls should be 20-30% of requests
  * - These limits balance user experience with cost control
+ * 
+ * STRATEGY:
+ * - Guest and auth limits are close to prevent abuse via fake account creation
+ * - Auth limit slightly higher to incentivize signup, but not enough to encourage fake accounts
+ * - Auth users tracked by User ID (can't bypass with VPN), guests by IP (easy to bypass)
  */
 const searchRateLimiter = createAdaptiveRateLimiter({
   guestWindowMs: 15 * 60 * 1000, // 15 minutes
-  guestMaxRequests: 5, // 5 searches per 15 min for guests (conservative for cost control)
+  guestMaxRequests: 5, // 5 searches per 15 min for guests
   authWindowMs: 15 * 60 * 1000, // 15 minutes
-  authMaxRequests: 30, // 30 searches per 15 min for authenticated (generous but safe)
+  authMaxRequests: 10, // 10 searches per 15 min for authenticated (2x guest, but not excessive)
   message: "Too many search requests. Please wait before searching again."
 });
 

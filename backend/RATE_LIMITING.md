@@ -11,8 +11,8 @@ These are the most expensive endpoints as they make external API calls to Google
 
 | User Type | Limit | Window | Key |
 |-----------|-------|--------|-----|
-| **Guest** | 10 requests | 15 minutes | IP address |
-| **Authenticated** | 100 requests | 15 minutes | User ID |
+| **Guest** | 5 requests | 15 minutes | IP address |
+| **Authenticated** | 10 requests | 15 minutes | User ID |
 
 **Endpoints:**
 - `POST /api/volume-based`
