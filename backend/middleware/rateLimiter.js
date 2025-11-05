@@ -61,12 +61,17 @@ const createAdaptiveRateLimiter = (options) => {
 /**
  * Rate limiter for expensive search operations (volume-based, distance-only)
  * These endpoints make external API calls and are expensive
+ * 
+ * COST ANALYSIS:
+ * - Each search costs ~$0.50-0.66 in Google Maps API calls (without cache)
+ * - With normalization + caching, actual API calls should be 20-30% of requests
+ * - These limits balance user experience with cost control
  */
 const searchRateLimiter = createAdaptiveRateLimiter({
   guestWindowMs: 15 * 60 * 1000, // 15 minutes
-  guestMaxRequests: 10, // 10 searches per 15 min for guests
+  guestMaxRequests: 5, // 5 searches per 15 min for guests (conservative for cost control)
   authWindowMs: 15 * 60 * 1000, // 15 minutes
-  authMaxRequests: 100, // 100 searches per 15 min for authenticated
+  authMaxRequests: 30, // 30 searches per 15 min for authenticated (generous but safe)
   message: "Too many search requests. Please wait before searching again."
 });
 

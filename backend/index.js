@@ -82,10 +82,11 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log("\n✅ Query Normalization: ACTIVE");
-  console.log("🛡️  Rate Limiting: ACTIVE");
-  console.log("   - Guests: 10 searches per 15 min");
-  console.log("   - Authenticated: 100 searches per 15 min");
+  console.log("🛡️  Rate Limiting: ACTIVE (Cost-Optimized)");
+  console.log("   - Guests: 5 searches per 15 min");
+  console.log("   - Authenticated: 30 searches per 15 min");
   console.log("   - Auth endpoints: 5 attempts per 15 min");
+  console.log("💰 Est. max API cost: ~$150/15min (with 70% cache hit rate)");
   console.log("📊 View metrics at: /api/metrics");
   console.log("🔄 Reset metrics: POST /api/metrics/reset\n");
 });

@@ -22,10 +22,12 @@
 
 | Endpoint | Guest Limit | Auth Limit | Window |
 |----------|-------------|------------|--------|
-| Search (volume/distance) | 10 | 100 | 15 min |
+| Search (volume/distance) | 5 | 30 | 15 min |
 | Login/Signup | 5 | 5 | 15 min |
 | Password Reset | 3 | 3 | 60 min |
 | All Other Endpoints | 200 | 200 | 15 min |
+
+**Note:** Search limits are conservative to control Google Maps API costs (~$0.50-0.66 per search without cache).
 
 ## Key Features
 
