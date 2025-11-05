@@ -9,11 +9,15 @@ const profileRoutes = require("./routes/profileRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const cors = require("cors");
 const verifyToken = require("./middleware/authMiddleware");
+const { globalRateLimiter } = require("./middleware/rateLimiter");
 
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Trust proxy - important for rate limiting behind reverse proxies (Render, Heroku, etc.)
+app.set('trust proxy', 1);
 
 // Middleware
 app.use(express.json());
@@ -32,6 +36,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Apply global rate limiter to all routes
+app.use(globalRateLimiter);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -75,6 +82,10 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log("\n✅ Query Normalization: ACTIVE");
+  console.log("🛡️  Rate Limiting: ACTIVE");
+  console.log("   - Guests: 10 searches per 15 min");
+  console.log("   - Authenticated: 100 searches per 15 min");
+  console.log("   - Auth endpoints: 5 attempts per 15 min");
   console.log("📊 View metrics at: /api/metrics");
   console.log("🔄 Reset metrics: POST /api/metrics/reset\n");
 });

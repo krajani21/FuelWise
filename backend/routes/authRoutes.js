@@ -3,11 +3,12 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const User = require("../models/User");
 const { sendPasswordResetEmail } = require("../services/emailService");
+const { authRateLimiter, passwordResetRateLimiter } = require("../middleware/rateLimiter");
 
 const router = express.Router();
 
 // Signup
-router.post("/signup", async (req, res) => {
+router.post("/signup", authRateLimiter, async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const userExists = await User.findOne({ email });
@@ -24,7 +25,7 @@ router.post("/signup", async (req, res) => {
 });
 
 // Login
-router.post("/login", async (req, res) => {
+router.post("/login", authRateLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("Login attempt for email:", email);
@@ -55,7 +56,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Forgot Password
-router.post("/forgot-password", async (req, res) => {
+router.post("/forgot-password", passwordResetRateLimiter, async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -96,7 +97,7 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 // Reset Password
-router.post("/reset-password", async (req, res) => {
+router.post("/reset-password", passwordResetRateLimiter, async (req, res) => {
   try {
     const { token, password } = req.body;
     

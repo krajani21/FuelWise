@@ -6,6 +6,7 @@ const { normalizeSearchParams, generateCacheKey } = require("../utils/normalizeQ
 const { recordApiCall, recordNormalizedRequest } = require("../utils/metrics");
 const { collapseRequest } = require("../utils/requestCollapsing");
 const cache = require("../utils/cache");
+const { optionalAuth, searchRateLimiter } = require("../middleware/rateLimiter");
 
 // Helper function to chunk array into smaller arrays
 const chunkArray = (array, chunkSize) => {
@@ -17,7 +18,7 @@ const chunkArray = (array, chunkSize) => {
 };
 
 // POST /api/distances-only
-router.post("/", async (req, res) => {
+router.post("/", optionalAuth, searchRateLimiter, async (req, res) => {
   try {
     // Normalize query parameters
     const normalized = normalizeSearchParams(req.body);
