@@ -53,6 +53,16 @@ app.get("/api/protected", verifyToken, (req, res) =>{
   res.json( {message: "you are now authorised", userId: req.user.id})
 });
 
+// Metrics endpoint (for monitoring normalization effectiveness)
+const { getMetrics, resetMetrics } = require("./utils/metrics");
+app.get("/api/metrics", (req, res) => {
+  res.json(getMetrics());
+});
+app.post("/api/metrics/reset", (req, res) => {
+  resetMetrics();
+  res.json({ message: "Metrics reset successfully" });
+});
+
 // Optional root route
 app.get("/", (req, res) => {
   res.send("Fuel Cost Optimization API is running.");
@@ -60,4 +70,7 @@ app.get("/", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log("\n✅ Query Normalization: ACTIVE");
+  console.log("📊 View metrics at: /api/metrics");
+  console.log("🔄 Reset metrics: POST /api/metrics/reset\n");
 });

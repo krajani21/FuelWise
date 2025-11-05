@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const { findBestFuelPrice, convertPriceToFloat } = require("../utils/fuelTypeMapping");
+const { normalizeSearchParams, generateCacheKey } = require("../utils/normalizeQuery");
+const { recordApiCall, recordNormalizedRequest } = require("../utils/metrics");
 
 // Helper function to chunk array into smaller arrays
 const chunkArray = (array, chunkSize) => {
@@ -15,11 +17,25 @@ const chunkArray = (array, chunkSize) => {
 // POST /api/distances-only
 router.post("/", async (req, res) => {
   try {
-    const { origin, radius = 5, fuelType = 'Regular' } = req.body; // Default to 5km and Regular fuel if not provided
+    // Normalize query parameters
+    const normalized = normalizeSearchParams(req.body);
+    const { origin, radius, fuelType } = normalized;
 
     if (!origin || !origin.lat || !origin.lng) {
       return res.status(400).json({ error: "Invalid origin" });
     }
+    
+    // Record metrics
+    recordApiCall('distance');
+    const cacheKey = generateCacheKey(normalized);
+    recordNormalizedRequest(cacheKey);
+    
+    console.log("\n=== DISTANCE-ONLY SEARCH ===");
+    console.log("📍 Original coords:", req.body.origin.lat.toFixed(6), req.body.origin.lng.toFixed(6));
+    console.log("📍 Normalized coords:", origin.lat.toFixed(3), origin.lng.toFixed(3));
+    console.log("📏 Original radius:", req.body.radius, "km → Bucketed:", radius, "km");
+    console.log("🔑 Cache Key:", cacheKey);
+    console.log("===========================\n");
 
     // Convert radius from km to meters
     const radiusInMeters = radius * 1000;

@@ -3,6 +3,8 @@ const router = express.Router();
 const axios = require("axios");
 const { calculateEffectiveFuelVolume } = require("../utils/calculate");
 const { findBestFuelPrice, convertPriceToFloat } = require("../utils/fuelTypeMapping");
+const { normalizeSearchParams, generateCacheKey } = require("../utils/normalizeQuery");
+const { recordApiCall, recordNormalizedRequest } = require("../utils/metrics");
 
 // Helper function to chunk array into smaller arrays
 const chunkArray = (array, chunkSize) => {
@@ -15,7 +17,9 @@ const chunkArray = (array, chunkSize) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { origin, budget, efficiency, radius = 5, fuelType = 'Regular' } = req.body; // Default to 5km and Regular fuel if not provided
+    // Normalize query parameters
+    const normalized = normalizeSearchParams(req.body);
+    const { origin, budget, efficiency, radius, fuelType } = normalized;
 
     if (
       !origin || !origin.lat || !origin.lng ||
@@ -24,6 +28,20 @@ router.post("/", async (req, res) => {
     ) {
       return res.status(400).json({ error: "Invalid origin, budget, or efficiency" });
     }
+    
+    // Record metrics
+    recordApiCall('volume');
+    const cacheKey = generateCacheKey(normalized);
+    recordNormalizedRequest(cacheKey);
+    
+    // Log normalization for verification
+    console.log("\n=== VOLUME-BASED SEARCH ===");
+    console.log("📍 Original coords:", req.body.origin.lat.toFixed(6), req.body.origin.lng.toFixed(6));
+    console.log("📍 Normalized coords:", origin.lat.toFixed(3), origin.lng.toFixed(3));
+    console.log("📏 Original radius:", req.body.radius, "km → Bucketed:", radius, "km");
+    console.log("💵 Budget/Efficiency:", req.body.budget.toFixed(2), "/", req.body.efficiency.toFixed(2), "→", budget.toFixed(2), "/", efficiency.toFixed(1));
+    console.log("🔑 Cache Key:", cacheKey);
+    console.log("===========================\n");
 
     // Convert radius from km to meters
     const radiusInMeters = radius * 1000;
