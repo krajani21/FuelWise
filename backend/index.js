@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes")
 const recentSearchRoutes = require("./routes/recentSearchRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes");
 const cors = require("cors");
 const verifyToken = require("./middleware/authMiddleware");
 const { globalRateLimiter } = require("./middleware/rateLimiter");
@@ -55,6 +56,7 @@ app.use("/api/distances-only", distanceOnlyRoutes)
 app.use("/api/recent-searches", recentSearchRoutes);//handle recent searches
 app.use("/api/profile", profileRoutes);//handle user profile management
 app.use("/api/vehicles", vehicleRoutes);//handle vehicle data and validation
+app.use("/api/analytics", analyticsRoutes);//handle analytics and user tracking
 
 app.get("/api/protected", verifyToken, (req, res) =>{
   res.json( {message: "you are now authorised", userId: req.user.id})
@@ -87,5 +89,6 @@ app.listen(PORT, () => {
   console.log("   - Authenticated: 10 searches per 15 min");
   console.log("   - Auth endpoints: 5 attempts per 15 min");
   console.log("📊 View metrics at: /api/metrics");
+  console.log("📈 View analytics at: /api/analytics");
   console.log("🔄 Reset metrics: POST /api/metrics/reset\n");
 });

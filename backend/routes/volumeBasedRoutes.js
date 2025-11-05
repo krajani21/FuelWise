@@ -8,6 +8,7 @@ const { recordApiCall, recordNormalizedRequest } = require("../utils/metrics");
 const { collapseRequest } = require("../utils/requestCollapsing");
 const cache = require("../utils/cache");
 const { optionalAuth, searchRateLimiter } = require("../middleware/rateLimiter");
+const activityLogger = require("../middleware/activityLogger");
 
 // Helper function to chunk array into smaller arrays
 const chunkArray = (array, chunkSize) => {
@@ -18,7 +19,7 @@ const chunkArray = (array, chunkSize) => {
   return chunks;
 };
 
-router.post("/", optionalAuth, searchRateLimiter, async (req, res) => {
+router.post("/", optionalAuth, searchRateLimiter, activityLogger('search', { searchType: 'volume' }), async (req, res) => {
   try {
     // Normalize query parameters
     const normalized = normalizeSearchParams(req.body);
@@ -49,8 +50,10 @@ router.post("/", optionalAuth, searchRateLimiter, async (req, res) => {
     // Check cache first
     const cachedResult = cache.get(cacheKey);
     if (cachedResult) {
+      res.locals.cacheHit = true;
       return res.json(cachedResult);
     }
+    res.locals.cacheHit = false;
 
     // Collapse identical concurrent requests
     const finalStations = await collapseRequest(cacheKey, async () => {

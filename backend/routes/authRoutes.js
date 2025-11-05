@@ -4,11 +4,12 @@ const crypto = require("crypto");
 const User = require("../models/User");
 const { sendPasswordResetEmail } = require("../services/emailService");
 const { authRateLimiter, passwordResetRateLimiter } = require("../middleware/rateLimiter");
+const activityLogger = require("../middleware/activityLogger");
 
 const router = express.Router();
 
 // Signup
-router.post("/signup", authRateLimiter, async (req, res) => {
+router.post("/signup", authRateLimiter, activityLogger('signup'), async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const userExists = await User.findOne({ email });
@@ -25,7 +26,7 @@ router.post("/signup", authRateLimiter, async (req, res) => {
 });
 
 // Login
-router.post("/login", authRateLimiter, async (req, res) => {
+router.post("/login", authRateLimiter, activityLogger('login'), async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("Login attempt for email:", email);
