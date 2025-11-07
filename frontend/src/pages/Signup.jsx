@@ -23,6 +23,13 @@ const Signup = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      
+      // Handle rate limiting (429) which might not return JSON
+      if (res.status === 429) {
+        setError("Too many signup attempts. Please try again in 15 minutes.");
+        return;
+      }
+      
       const data = await res.json();
       if (res.ok) {
         // Store token in localStorage and state
