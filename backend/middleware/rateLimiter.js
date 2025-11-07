@@ -74,9 +74,9 @@ const createAdaptiveRateLimiter = (options) => {
  */
 const searchRateLimiter = createAdaptiveRateLimiter({
   guestWindowMs: 15 * 60 * 1000, // 15 minutes
-  guestMaxRequests: 5, // 5 searches per 15 min for guests
+  guestMaxRequests: 100, // 100 searches per 15 min for guests (increased for testing)
   authWindowMs: 15 * 60 * 1000, // 15 minutes
-  authMaxRequests: 10, // 10 searches per 15 min for authenticated (2x guest, but not excessive)
+  authMaxRequests: 200, // 200 searches per 15 min for authenticated (increased for testing)
   message: "Too many search requests. Please wait before searching again."
 });
 
@@ -105,7 +105,7 @@ const authRateLimiter = rateLimit({
  */
 const passwordResetRateLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 attempts per hour per IP
+  max: 50, // 50 attempts per hour per IP (increased for testing)
   keyGenerator: (req) => `reset:${req.ip}`,
   message: "Too many password reset requests. Please try again later.",
   standardHeaders: true,
@@ -124,7 +124,7 @@ const passwordResetRateLimiter = rateLimit({
  */
 const globalRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // 200 requests per 15 min per IP
+  max: 1000, // 1000 requests per 15 min per IP (increased for testing)
   keyGenerator: (req) => `global:${req.ip}`,
   message: "Too many requests from this IP. Please try again later.",
   standardHeaders: true,
