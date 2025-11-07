@@ -54,8 +54,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
   const [fuelAmount, setFuelAmount] = useState('');
   const [fuelEfficiency, setFuelEfficiency] = useState('');
   const [searchRadius, setSearchRadius] = useState('5'); // Default to 5km
-  const [filterByDistance, setFilterByDistance] = useState(true);
-  const [filterBySavings, setFilterBySavings] = useState(false);
+  const [filterByDistance, setFilterByDistance] = useState(false);
+  const [filterBySavings, setFilterBySavings] = useState(true);
   const [locationStatus, setLocationStatus] = useState('idle'); // idle, loading, success, error
   const [recentSearches, setRecentSearches] = useState([]);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -690,28 +690,6 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                           <div className="relative">
                             <input
                               type="checkbox"
-                              checked={filterByDistance}
-                              onChange={handleFilterByDistanceChange}
-                              className="sr-only"
-                            />
-                            <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
-                              filterByDistance 
-                                ? 'bg-[#4CAF50] border-[#4CAF50]' 
-                                : 'border-gray-300 group-hover:border-[#4CAF50]'
-                            }`}>
-                              {filterByDistance && <div className="w-3 h-3 bg-white rounded-sm"></div>}
-                            </div>
-                          </div>
-                          <span className="ml-3 text-[#333333] group-hover:text-[#003366] transition-colors duration-200">
-                            <MapPin className="inline h-4 w-4 mr-1" />
-                            Sort by Distance
-                          </span>
-                        </label>
-                        
-                        <label className="flex items-center cursor-pointer group">
-                          <div className="relative">
-                            <input
-                              type="checkbox"
                               checked={filterBySavings}
                               onChange={handleFilterBySavingsChange}
                               className="sr-only"
@@ -727,6 +705,28 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                           <span className="ml-3 text-[#333333] group-hover:text-[#003366] transition-colors duration-200">
                             <Star className="inline h-4 w-4 mr-1" />
                             Sort by Max Savings
+                          </span>
+                        </label>
+                        
+                        <label className="flex items-center cursor-pointer group">
+                          <div className="relative">
+                            <input
+                              type="checkbox"
+                              checked={filterByDistance}
+                              onChange={handleFilterByDistanceChange}
+                              className="sr-only"
+                            />
+                            <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
+                              filterByDistance 
+                                ? 'bg-[#4CAF50] border-[#4CAF50]' 
+                                : 'border-gray-300 group-hover:border-[#4CAF50]'
+                            }`}>
+                              {filterByDistance && <div className="w-3 h-3 bg-white rounded-sm"></div>}
+                            </div>
+                          </div>
+                          <span className="ml-3 text-[#333333] group-hover:text-[#003366] transition-colors duration-200">
+                            <MapPin className="inline h-4 w-4 mr-1" />
+                            Sort by Distance
                           </span>
                         </label>
                       </div>
