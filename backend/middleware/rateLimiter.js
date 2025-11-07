@@ -82,41 +82,95 @@ const searchRateLimiter = createAdaptiveRateLimiter({
 
 /**
  * Rate limiter for authentication endpoints (login, signup)
- * Prevent brute force attacks
+ * Dual-layer protection:
+ * 1. Per-email limit: Prevents brute force on specific accounts
+ * 2. Per-IP limit: Prevents mass attacks, but generous for shared networks
  */
-const authRateLimiter = rateLimit({
+
+// Layer 1: Rate limit by email (strict - prevents account brute force)
+const authEmailRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 attempts per 15 minutes per IP
-  keyGenerator: (req) => `auth:${req.ip}`,
-  message: "Too many authentication attempts. Please try again later.",
+  max: 5, // 5 attempts per email per 15 minutes
+  keyGenerator: (req) => {
+    const email = req.body?.email;
+    return email ? `auth:email:${email.toLowerCase()}` : `auth:ip:${req.ip}`;
+  },
+  skipSuccessfulRequests: true, // Don't count successful logins
+  message: "Too many login attempts for this account. Please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     res.status(429).json({
-      error: "Too many authentication attempts from this IP. Please try again later.",
+      error: "Too many login attempts for this account. Please wait 15 minutes or reset your password.",
       retryAfter: 15 // minutes
     });
   }
 });
 
-/**
- * Rate limiter for password reset requests
- * Prevent abuse of email sending
- */
-const passwordResetRateLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 50, // 50 attempts per hour per IP (increased for testing)
-  keyGenerator: (req) => `reset:${req.ip}`,
-  message: "Too many password reset requests. Please try again later.",
+// Layer 2: Rate limit by IP (generous - allows multiple users on same network)
+const authIpRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 attempts per IP per 15 minutes (high for shared networks)
+  keyGenerator: (req) => `auth:ip:${req.ip}`,
+  skipSuccessfulRequests: true,
+  message: "Too many authentication attempts from this network. Please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     res.status(429).json({
-      error: "Too many password reset requests. Please try again in an hour.",
+      error: "Too many authentication attempts from this network. Please try again later.",
+      retryAfter: 15 // minutes
+    });
+  }
+});
+
+// Combined middleware - both must pass
+const authRateLimiter = [authEmailRateLimiter, authIpRateLimiter];
+
+/**
+ * Rate limiter for password reset requests
+ * Dual-layer protection - same strategy as auth
+ */
+
+// Layer 1: Per-email limit (strict)
+const resetEmailRateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // 3 attempts per email per hour
+  keyGenerator: (req) => {
+    const email = req.body?.email;
+    return email ? `reset:email:${email.toLowerCase()}` : `reset:ip:${req.ip}`;
+  },
+  skipSuccessfulRequests: true,
+  message: "Too many password reset requests for this account.",
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: "Too many password reset requests for this account. Please try again in an hour.",
       retryAfter: 60 // minutes
     });
   }
 });
+
+// Layer 2: Per-IP limit (generous)
+const resetIpRateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 50, // 50 attempts per IP per hour (allows shared networks)
+  keyGenerator: (req) => `reset:ip:${req.ip}`,
+  skipSuccessfulRequests: true,
+  message: "Too many password reset requests from this network.",
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: "Too many password reset requests from this network. Please try again in an hour.",
+      retryAfter: 60 // minutes
+    });
+  }
+});
+
+// Combined middleware
+const passwordResetRateLimiter = [resetEmailRateLimiter, resetIpRateLimiter];
 
 /**
  * Global rate limiter - catches all other endpoints
