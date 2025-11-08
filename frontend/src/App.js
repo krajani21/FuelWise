@@ -25,7 +25,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from './pages/Profile';
 import LandingPage from './pages/LandingPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import LogoutButton from './components/LogoutButton';
+import Footer from './components/Footer';
 import PrivateRoute from './routes/PrivateRoute';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
@@ -402,7 +405,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navigation */}
       <nav className="bg-[#003366] text-white shadow-lg relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -799,7 +802,14 @@ const AppContent = ({ userLocation, setUserLocation }) => {
             <LandingPage />
           )
         } />
+
+        {/* Legal Pages */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
       </Routes>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
