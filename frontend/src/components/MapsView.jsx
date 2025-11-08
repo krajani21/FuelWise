@@ -199,11 +199,6 @@ const MapComponent = ({
         pixelOffset: new window.google.maps.Size(0, -10)
       });
 
-      // Create info window content
-      const infoWindow = new window.google.maps.InfoWindow({
-        content: createInfoWindowContent(station, effectiveCost, isPreferred, trueSavings)
-      });
-
       // Add click listener to show Google Maps-style label
       marker.addListener('click', () => {
         // Close any other open labels

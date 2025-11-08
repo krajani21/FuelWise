@@ -80,7 +80,7 @@ const FuelListDistance = ({ userLocation }) => {
           setIsLoading(false);
         });
     }
-  }, [userLocation, preferredBrands, brandsLoading, searchParams?.radius]);
+  }, [userLocation, preferredBrands, brandsLoading, searchParams?.radius, userFuelType]);
 
   const handleGetDirections = (lat, lng) => {
     const origin = `${userLocation.lat},${userLocation.lng}`;

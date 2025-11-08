@@ -11,7 +11,6 @@ import {
   Clock,
   Fuel,
   Star,
-  Tag,
   HelpCircle,
   RefreshCw
 } from 'lucide-react';
