@@ -52,6 +52,11 @@ const AppContent = ({ userLocation, setUserLocation }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isLoading, isAuthenticated } = useContext(AuthContext);
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [fuelAmount, setFuelAmount] = useState('');
   const [fuelEfficiency, setFuelEfficiency] = useState('');

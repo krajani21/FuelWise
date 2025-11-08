@@ -220,6 +220,14 @@ const LandingPage = () => (
           </Link>
           
           <Link
+            to="/search"
+            className="bg-white hover:bg-gray-100 text-[#003366] py-3 px-8 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
+          >
+            <Fuel className="h-5 w-5" />
+            <span>Continue as Guest</span>
+          </Link>
+          
+          <Link
             to="/login"
             className="bg-white hover:bg-gray-100 text-[#003366] py-3 px-8 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105"
           >
