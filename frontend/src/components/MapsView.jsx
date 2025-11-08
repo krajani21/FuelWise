@@ -242,38 +242,6 @@ const MapComponent = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, stations, submittedAmount, submittedEfficiency, preferredBrands, onStationClick]);
 
-
-  const createInfoWindowContent = (station, effectiveCost, isPreferred, trueSavings = 0) => {
-    const distanceKm = (station.distance / 1000).toFixed(1);
-    const isPositive = trueSavings > 0;
-    
-    return `
-      <div style="padding: 10px; min-width: 200px;">
-        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin: 0; font-size: 16px; font-weight: bold;">${station.station_name}</h3>
-          ${isPreferred ? '<span style="background: #FFD700; color: #000; padding: 2px 6px; border-radius: 10px; font-size: 10px; margin-left: 8px;">Preferred</span>' : ''}
-        </div>
-        <p style="margin: 4px 0; color: #666; font-size: 12px;">${station.address}</p>
-        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
-          <span style="font-size: 14px;">Price:</span>
-          <span style="font-weight: bold; color: #4CAF50;">$${station.price.toFixed(2)}/L</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
-          <span style="font-size: 14px;">Net Benefit:</span>
-          <span style="font-weight: bold; color: ${isPositive ? '#4285F4' : '#FF4444'};">${isPositive ? '+' : ''}$${trueSavings.toFixed(2)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
-          <span style="font-size: 14px;">Distance:</span>
-          <span style="font-size: 14px;">${distanceKm} km</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
-          <span style="font-size: 14px;">Travel Time:</span>
-          <span style="font-size: 14px;">${station.duration_text || 'N/A'}</span>
-        </div>
-      </div>
-    `;
-  };
-
   return (
     <div className="w-full h-full">
       <div ref={mapRef} style={{ width: '100%', height: '500px' }} />
