@@ -345,8 +345,16 @@ const AppContent = ({ userLocation, setUserLocation }) => {
 
   // Function to start onboarding guide
   const startOnboardingGuide = () => {
-    setShowOnboarding(true);
-    setOnboardingStep(1);
+    if (location.pathname !== '/search') {
+      navigate('/search');
+      setTimeout(() => {
+        setShowOnboarding(true);
+        setOnboardingStep(1);
+      }, 300);
+    } else {
+      setShowOnboarding(true);
+      setOnboardingStep(1);
+    }
   };
 
   // Handle search radius change for onboarding
@@ -430,7 +438,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 className="flex items-center space-x-1 hover:text-[#4CAF50] transition-colors duration-200"
               >
                 <HelpCircle className="h-4 w-4" />
-                <span>Guide</span>
+                <span>How to Use</span>
               </button>
               {isAuthenticated ? (
                 !hideLogout && <LogoutButton />
@@ -470,7 +478,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 className="flex items-center space-x-2 py-2 hover:text-[#4CAF50] transition-colors duration-200"
               >
                 <HelpCircle className="h-4 w-4" />
-                <span>Guide</span>
+                <span>How to Use</span>
               </button>
               {isAuthenticated ? (
                 !hideLogout && (
