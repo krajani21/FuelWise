@@ -74,9 +74,9 @@ const createAdaptiveRateLimiter = (options) => {
  */
 const searchRateLimiter = createAdaptiveRateLimiter({
   guestWindowMs: 15 * 60 * 1000, // 15 minutes
-  guestMaxRequests: 100, // 100 searches per 15 min for guests (increased for testing)
+  guestMaxRequests: 5, // 5 searches per 15 min for guests
   authWindowMs: 15 * 60 * 1000, // 15 minutes
-  authMaxRequests: 200, // 200 searches per 15 min for authenticated (increased for testing)
+  authMaxRequests: 10, // 10 searches per 15 min for authenticated
   message: "Too many search requests. Please wait before searching again."
 });
 
