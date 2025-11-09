@@ -59,6 +59,18 @@ const createAdaptiveRateLimiter = (options) => {
 };
 
 /**
+ * Daily rate limiter for search operations
+ * Prevents all-day grinding attacks
+ */
+const dailySearchLimiter = createAdaptiveRateLimiter({
+  guestWindowMs: 24 * 60 * 60 * 1000, // 24 hours
+  guestMaxRequests: 10, // 10 searches per day for guests
+  authWindowMs: 24 * 60 * 60 * 1000, // 24 hours
+  authMaxRequests: 20, // 20 searches per day for authenticated
+  message: "Daily search limit reached. Please try again tomorrow."
+});
+
+/**
  * Rate limiter for expensive search operations (volume-based, distance-only)
  * These endpoints make external API calls and are expensive
  * 
@@ -211,6 +223,7 @@ const optionalAuth = (req, res, next) => {
 };
 
 module.exports = {
+  dailySearchLimiter,
   searchRateLimiter,
   authRateLimiter,
   passwordResetRateLimiter,

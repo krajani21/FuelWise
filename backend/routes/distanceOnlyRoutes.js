@@ -6,7 +6,7 @@ const { normalizeSearchParams, generateCacheKey } = require("../utils/normalizeQ
 const { recordApiCall, recordNormalizedRequest } = require("../utils/metrics");
 const { collapseRequest } = require("../utils/requestCollapsing");
 const cache = require("../utils/cache");
-const { optionalAuth, searchRateLimiter } = require("../middleware/rateLimiter");
+const { optionalAuth, dailySearchLimiter, searchRateLimiter } = require("../middleware/rateLimiter");
 const activityLogger = require("../middleware/activityLogger");
 
 // Helper function to chunk array into smaller arrays
@@ -19,7 +19,7 @@ const chunkArray = (array, chunkSize) => {
 };
 
 // POST /api/distances-only
-router.post("/", optionalAuth, searchRateLimiter, activityLogger('search', { searchType: 'distance' }), async (req, res) => {
+router.post("/", optionalAuth, dailySearchLimiter, searchRateLimiter, activityLogger('search', { searchType: 'distance' }), async (req, res) => {
   try {
     // Normalize query parameters
     const normalized = normalizeSearchParams(req.body);

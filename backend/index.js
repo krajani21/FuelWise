@@ -85,8 +85,8 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log("\n✅ Query Normalization: ACTIVE");
   console.log("🛡️  Rate Limiting: ACTIVE");
-  console.log("   - Guests: 5 searches per 15 min");
-  console.log("   - Authenticated: 10 searches per 15 min");
+  console.log("   - Guests: 5 searches per 15 min | 10 per day");
+  console.log("   - Authenticated: 10 searches per 15 min | 20 per day");
   console.log("   - Auth endpoints: 5 attempts per 15 min");
   console.log("📊 View metrics at: /api/metrics");
   console.log("📈 View analytics at: /api/analytics");
