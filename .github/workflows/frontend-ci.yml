@@ -31,9 +31,10 @@ jobs:
         working-directory: frontend
 
       - name: Run tests
-        run: npm test -- --watch=false
+        run: npm test -- --watchAll=false --passWithNoTests
         working-directory: frontend
-        if: hashFiles('frontend/**/jest.config.*', 'frontend/**/vitest.config.*') != ''
+        env:
+          CI: true
 
       - name: Build
         run: npm run build
