@@ -429,7 +429,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/search" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
               {isAuthenticated && (
                 <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
@@ -466,7 +466,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-[#003366] border-t border-blue-700 shadow-lg">
             <div className="px-4 pt-2 pb-4 space-y-2">
-              <Link to="/search" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
               {isAuthenticated && (
                 <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
