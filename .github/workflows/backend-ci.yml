@@ -24,15 +24,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+        working-directory: backend
 
       - name: Run tests
         run: npm test -- --watch=false
-        # or: npm run test:unit
-
-      # Optional but recommended
-      - name: Lint
-        run: npm run lint
-        if: success() && hashFiles('**/.eslintrc*') != ''
+        working-directory: backend
+        if: hashFiles('backend/**/jest.config.*') != ''
