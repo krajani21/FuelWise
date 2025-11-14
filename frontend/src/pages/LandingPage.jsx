@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Fuel, LogIn, UserPlus, MapPin, DollarSign, Star, Navigation, Car, TrendingDown, Shield, Clock, Search, ArrowRight } from 'lucide-react';
+import { Fuel, LogIn, UserPlus, MapPin, DollarSign, Star, Navigation, Shield, Clock, ArrowRight } from 'lucide-react';
 
 const LandingPage = () => (
   <div className="min-h-screen bg-gray-50">
