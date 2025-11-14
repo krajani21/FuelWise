@@ -50,8 +50,8 @@ test('renders FuelWise app without crashing', async () => {
     expect(screen.queryByText(/validating authentication/i)).not.toBeInTheDocument();
   });
   
-  // Check if the app header renders
-  expect(screen.getByText(/FuelWise/i)).toBeInTheDocument();
+  // Check if the app renders (multiple FuelWise instances expected)
+  expect(screen.getAllByText(/FuelWise/i).length).toBeGreaterThan(0);
 });
 
 test('renders landing page for unauthenticated users', async () => {
