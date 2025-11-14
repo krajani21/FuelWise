@@ -71,7 +71,9 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="mailto:fuelwiseapp@gmail.com" 
+                  href="https://mail.google.com/mail/?view=cm&to=fuelwiseapp@gmail.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center space-x-2 text-gray-300 hover:text-[#4CAF50] transition-colors duration-200 text-sm"
                 >
                   <Mail className="h-4 w-4" />
