@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Fuel, LogIn, UserPlus, MapPin, DollarSign, Star, Navigation, Car, TrendingDown, Shield, Clock, Search } from 'lucide-react';
+import { Fuel, LogIn, UserPlus, MapPin, DollarSign, Star, Navigation, Car, TrendingDown, Shield, Clock, Search, ArrowRight } from 'lucide-react';
 
 const LandingPage = () => (
   <div className="min-h-screen bg-gray-50">
@@ -88,89 +88,55 @@ const LandingPage = () => (
         </div>
       </div>
 
-      {/* How It Works Section */}
-      <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-2xl p-8 md:p-12">
-        <h2 className="text-4xl font-bold text-[#333333] mb-8 text-center">How It Works</h2>
+      {/* Quick Overview Section */}
+      <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-2xl p-8 md:p-12 text-center">
+        <h2 className="text-4xl font-bold text-[#333333] mb-4">Smart Fuel Savings in 3 Steps</h2>
+        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          FuelWise analyzes real-time fuel prices and calculates the <strong>true cost</strong> of driving to each station. 
+          We show you where to get the most fuel for your budget—not just the cheapest price per litre.
+        </p>
         
-        <div className="space-y-8">
-          <div className="flex items-start space-x-4">
-            <div className="bg-[#4CAF50] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0 shadow-lg">
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg p-6 shadow-md">
+            <div className="bg-[#4CAF50] text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mx-auto mb-4">
               1
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#333333] mb-2 flex items-center">
-                <Navigation className="h-5 w-5 mr-2 text-[#4CAF50]" />
-                Share Your Location
-              </h3>
-              <p className="text-gray-600">
-                Allow FuelWise to access your location so we can find gas stations near you. Your location is only used for searching and is never stored without your permission.
-              </p>
-            </div>
+            <h3 className="text-lg font-bold text-[#333333] mb-2">Share Location</h3>
+            <p className="text-gray-600 text-sm">Allow access to find nearby stations</p>
           </div>
-
-          <div className="flex items-start space-x-4">
-            <div className="bg-[#4CAF50] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0 shadow-lg">
+          
+          <div className="bg-white rounded-lg p-6 shadow-md">
+            <div className="bg-[#4CAF50] text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mx-auto mb-4">
               2
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#333333] mb-2 flex items-center">
-                <Car className="h-5 w-5 mr-2 text-[#4CAF50]" />
-                Enter Your Details
-              </h3>
-              <p className="text-gray-600">
-                Input your fuel budget (how much you want to spend) and your vehicle's fuel efficiency (L/100km). 
-                Registered users can save their vehicle information for faster searches.
-              </p>
-            </div>
+            <h3 className="text-lg font-bold text-[#333333] mb-2">Enter Details</h3>
+            <p className="text-gray-600 text-sm">Budget and vehicle efficiency</p>
           </div>
-
-          <div className="flex items-start space-x-4">
-            <div className="bg-[#4CAF50] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0 shadow-lg">
+          
+          <div className="bg-white rounded-lg p-6 shadow-md">
+            <div className="bg-[#4CAF50] text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl mx-auto mb-4">
               3
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#333333] mb-2 flex items-center">
-                <Search className="h-5 w-5 mr-2 text-[#4CAF50]" />
-                Choose Your Preferences
-              </h3>
-              <p className="text-gray-600">
-                Select your search radius (5-50km) and sorting preference: sort by maximum savings to find the best deals, 
-                or sort by distance to find the closest stations.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-4">
-            <div className="bg-[#4CAF50] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0 shadow-lg">
-              4
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#333333] mb-2 flex items-center">
-                <TrendingDown className="h-5 w-5 mr-2 text-[#4CAF50]" />
-                Compare & Save
-              </h3>
-              <p className="text-gray-600">
-                View a list of nearby gas stations with real-time prices, distances, and total costs. Our algorithm calculates 
-                the true cost including fuel price and the extra fuel needed to drive there, showing you the actual best deal.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-4">
-            <div className="bg-[#4CAF50] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0 shadow-lg">
-              5
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#333333] mb-2 flex items-center">
-                <MapPin className="h-5 w-5 mr-2 text-[#4CAF50]" />
-                Navigate & Fill Up
-              </h3>
-              <p className="text-gray-600">
-                Select your preferred station and get instant turn-by-turn directions via Google Maps. Drive to your chosen station and enjoy your savings!
-              </p>
-            </div>
+            <h3 className="text-lg font-bold text-[#333333] mb-2">Save Money</h3>
+            <p className="text-gray-600 text-sm">Get real savings after travel costs</p>
           </div>
         </div>
+
+        <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 text-left mb-6">
+          <p className="text-yellow-900 font-semibold mb-2">💡 Did you know?</p>
+          <p className="text-yellow-800 text-sm">
+            The nearest station isn't always the best deal. Driving 5 extra minutes can save you <strong>$3-5 per fill-up</strong>—
+            that's <strong>$150-250 per year</strong> for weekly fill-ups!
+          </p>
+        </div>
+
+        <Link 
+          to="/how-it-works"
+          className="inline-flex items-center bg-[#003366] hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105"
+        >
+          Learn How We Calculate Savings
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Link>
       </div>
 
       {/* Benefits Section */}
