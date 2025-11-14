@@ -248,7 +248,7 @@ const LandingPage = () => (
             Terms of Service
           </Link>
           <span className="text-gray-400">•</span>
-          <a href="mailto:fuelwiseapp@gmail.com" className="text-gray-600 hover:text-[#4CAF50] transition-colors duration-200">
+          <a href="https://mail.google.com/mail/?view=cm&to=fuelwiseapp@gmail.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-[#4CAF50] transition-colors duration-200">
             Contact Us
           </a>
         </div>
