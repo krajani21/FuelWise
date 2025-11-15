@@ -476,6 +476,10 @@ const FuelListVolume = ({ userLocation }) => {
                 const trueSavings = station.trueSavings || 0;
                 const trueSavingsLitres = station.trueSavingsLitres || 0;
                 
+                // Calculate extra driving range from the extra fuel gained
+                const extraKilometers = submittedEfficiency > 0 
+                  ? (trueSavingsLitres * 100) / submittedEfficiency 
+                  : 0;
                 
                 // Show any positive savings, but only show negative costs if they're >= 10 cents
                 if (trueSavings > 0) {
@@ -508,7 +512,7 @@ const FuelListVolume = ({ userLocation }) => {
                             {isPositive ? '+' : ''}${trueSavings.toFixed(2)} Net {isPositive ? 'Benefit' : 'Cost'}
                           </div>
                           <div className={`${subTextColor} text-sm`}>
-                            {isPositive ? '+' : ''}{trueSavingsLitres.toFixed(1)}L {isPositive ? 'more' : 'less'} fuel after travel costs
+                            {isPositive ? '+' : ''}{Math.abs(extraKilometers).toFixed(0)} km {isPositive ? 'extra range' : 'less range'} • {isPositive ? '+' : ''}{trueSavingsLitres.toFixed(1)}L {isPositive ? 'more fuel' : 'less fuel'} after travel costs
                           </div>
                         </div>
                       </div>
