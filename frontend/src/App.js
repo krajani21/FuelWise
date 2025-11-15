@@ -26,6 +26,7 @@ import Profile from './pages/Profile';
 import LandingPage from './pages/LandingPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import HowItWorks from './pages/HowItWorks';
 import LogoutButton from './components/LogoutButton';
 import Footer from './components/Footer';
 import PrivateRoute from './routes/PrivateRoute';
@@ -429,7 +430,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/search" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/" className="hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/how-it-works" className="hover:text-[#4CAF50] transition-colors duration-200">How It Works</Link>
               {isAuthenticated && (
                 <Link to="/profile" className="hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
@@ -438,7 +440,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 className="flex items-center space-x-1 hover:text-[#4CAF50] transition-colors duration-200"
               >
                 <HelpCircle className="h-4 w-4" />
-                <span>How to Use</span>
+                <span>Quick Guide</span>
               </button>
               {isAuthenticated ? (
                 !hideLogout && <LogoutButton />
@@ -466,7 +468,8 @@ const AppContent = ({ userLocation, setUserLocation }) => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-[#003366] border-t border-blue-700 shadow-lg">
             <div className="px-4 pt-2 pb-4 space-y-2">
-              <Link to="/search" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Home</Link>
+              <Link to="/how-it-works" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">How It Works</Link>
               {isAuthenticated && (
                 <Link to="/profile" className="block py-2 hover:text-[#4CAF50] transition-colors duration-200">Profile</Link>
               )}
@@ -478,7 +481,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                 className="flex items-center space-x-2 py-2 hover:text-[#4CAF50] transition-colors duration-200"
               >
                 <HelpCircle className="h-4 w-4" />
-                <span>How to Use</span>
+                <span>Quick Guide</span>
               </button>
               {isAuthenticated ? (
                 !hideLogout && (
@@ -815,6 +818,9 @@ const AppContent = ({ userLocation, setUserLocation }) => {
           )
         } />
 
+        {/* Info Pages */}
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        
         {/* Legal Pages */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
