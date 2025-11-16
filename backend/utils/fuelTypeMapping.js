@@ -41,9 +41,19 @@ const findBestFuelPrice = (fuelPrices, userFuelType) => {
     return null;
   }
 
+  // For Premium and Diesel, ONLY return exact match - no fallbacks
+  // Users searching for Premium/Diesel want those specific types only
+  if (userFuelType === 'Premium' || userFuelType === 'Diesel') {
+    const primaryType = getUserFuelType(userFuelType);
+    const fuelEntry = fuelPrices.find(fp => fp.type === primaryType);
+    if (fuelEntry && fuelEntry.price?.units != null && fuelEntry.price?.nanos != null) {
+      return fuelEntry;
+    }
+    return null; // No fallback for Premium/Diesel
+  }
+
+  // For Regular, use fallback logic (can accept Midgrade/Premium as alternatives)
   const fallbackTypes = getFuelTypeFallbacks(userFuelType);
-  
-  // Try each fallback type in order of preference
   for (const fuelType of fallbackTypes) {
     const fuelEntry = fuelPrices.find(fp => fp.type === fuelType);
     if (fuelEntry && fuelEntry.price?.units != null && fuelEntry.price?.nanos != null) {
