@@ -75,6 +75,10 @@ app.post("/api/metrics/reset", (req, res) => {
   resetMetrics();
   res.json({ message: "Metrics reset successfully" });
 });
+app.post("/api/cache/clear", (req, res) => {
+  cache.clear();
+  res.json({ message: "Cache cleared successfully" });
+});
 
 // Optional root route
 app.get("/", (req, res) => {
