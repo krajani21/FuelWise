@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { fetchVolumeBased } from '../api/volumeBased';
-import { fetchUserProfile } from '../api/profile';
 import { calculateDollarSavings, calculateAreaStatistics } from '../utils/savings';
 import { sortByDistanceWithPreferred, sortByVolumeWithPreferred, sortBySavingsAndDistanceWithPreferred, sortByNetSavingsWithSmartTieBreaking, isPreferredStation } from '../utils/preferredStations';
 import { usePreferredBrands } from '../hooks/usePreferredBrands';
@@ -24,23 +23,6 @@ const FuelListVolume = ({ userLocation }) => {
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
   const { preferredBrands, loading: brandsLoading } = usePreferredBrands();
 
-  // Fetch user profile to get fuel type preference
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const profile = await fetchUserProfile();
-        if (profile?.vehicle?.fuelType) {
-          setUserFuelType(profile.vehicle.fuelType);
-        }
-      } catch (error) {
-        console.error('Error loading user profile:', error);
-        // Keep default fuel type if profile fetch fails
-      }
-    };
-    
-    loadUserProfile();
-  }, []);
-
   // Get URL parameters on component mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -48,6 +30,7 @@ const FuelListVolume = ({ userLocation }) => {
     const eff = urlParams.get('efficiency');
     const sort = urlParams.get('sort');
     const radius = urlParams.get('radius') || '5'; // Default to 5km if not provided
+    const fuelTypeParam = urlParams.get('fuelType') || 'Regular'; // Default to Regular if not provided
     
     if (amount && eff) {
       setFuelAmount(amount);
@@ -63,6 +46,11 @@ const FuelListVolume = ({ userLocation }) => {
     
     if (sort) {
       setSortMode(sort);
+    }
+
+    // Set fuel type from URL or default to Regular
+    if (['Regular', 'Premium', 'Diesel'].includes(fuelTypeParam)) {
+      setUserFuelType(fuelTypeParam);
     }
   }, []);
 
@@ -182,7 +170,8 @@ const FuelListVolume = ({ userLocation }) => {
     const params = new URLSearchParams({
       amount: submittedAmount?.toString() || '',
       efficiency: submittedEfficiency?.toString() || '',
-      radius: radius || '5'
+      radius: radius || '5',
+      fuelType: userFuelType || 'Regular'
     });
     navigate(`/search?${params.toString()}`);
   };
