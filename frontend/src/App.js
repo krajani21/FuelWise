@@ -62,6 +62,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
   const [fuelAmount, setFuelAmount] = useState('');
   const [fuelEfficiency, setFuelEfficiency] = useState('');
   const [searchRadius, setSearchRadius] = useState('5'); // Default to 5km
+  const [fuelType, setFuelType] = useState('Regular'); // Default to Regular
   const [filterByDistance, setFilterByDistance] = useState(false);
   const [filterBySavings, setFilterBySavings] = useState(true);
   const [locationStatus, setLocationStatus] = useState('idle'); // idle, loading, success, error
@@ -140,6 +141,7 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     const amount = urlParams.get('amount');
     const efficiency = urlParams.get('efficiency');
     const radius = urlParams.get('radius');
+    const fuelTypeParam = urlParams.get('fuelType');
     
     if (amount) {
       setFuelAmount(amount);
@@ -149,6 +151,9 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     }
     if (radius) {
       setSearchRadius(radius);
+    }
+    if (fuelTypeParam && ['Regular', 'Premium', 'Diesel'].includes(fuelTypeParam)) {
+      setFuelType(fuelTypeParam);
     }
   }, [location.search]);
 
@@ -296,16 +301,16 @@ const AppContent = ({ userLocation, setUserLocation }) => {
     // Navigate to appropriate page based on search preference
     if (filterByDistance && !filterBySavings) {
       // Sort by distance only - use distance-only route
-      navigate(`/distance?amount=${amount}&efficiency=${efficiency}&radius=${searchRadius}`);
+      navigate(`/distance?amount=${amount}&efficiency=${efficiency}&radius=${searchRadius}&fuelType=${fuelType}`);
     } else if (filterBySavings && !filterByDistance) {
       // Sort by max savings only - use volume-based route with savings sort
-      navigate(`/volume?amount=${amount}&efficiency=${efficiency}&sort=savings&radius=${searchRadius}`);
+      navigate(`/volume?amount=${amount}&efficiency=${efficiency}&sort=savings&radius=${searchRadius}&fuelType=${fuelType}`);
     } else if (!filterByDistance && !filterBySavings) {
       // Default behavior (neither selected) - use volume-based route
-      navigate(`/volume?amount=${amount}&efficiency=${efficiency}&radius=${searchRadius}`);
+      navigate(`/volume?amount=${amount}&efficiency=${efficiency}&radius=${searchRadius}&fuelType=${fuelType}`);
     } else {
       // Both checked - use volume-based with dual sorting
-      navigate(`/volume?amount=${amount}&efficiency=${efficiency}&sort=both&radius=${searchRadius}`);
+      navigate(`/volume?amount=${amount}&efficiency=${efficiency}&sort=both&radius=${searchRadius}&fuelType=${fuelType}`);
     }
   };
 
@@ -695,6 +700,24 @@ const AppContent = ({ userLocation, setUserLocation }) => {
                         <option value="10">10 km</option>
                         <option value="20">20 km</option>
                         <option value="50">50 km</option>
+                      </select>
+                    </div>
+
+                    {/* Fuel Type */}
+                    <div>
+                      <label htmlFor="fuelType" className="block text-sm font-medium text-[#333333] mb-2">
+                        <Fuel className="inline h-4 w-4 mr-1" />
+                        Fuel Type
+                      </label>
+                      <select
+                        id="fuelType"
+                        value={fuelType}
+                        onChange={(e) => setFuelType(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition-all duration-200"
+                      >
+                        <option value="Regular">Regular (Default)</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Diesel">Diesel</option>
                       </select>
                     </div>
 

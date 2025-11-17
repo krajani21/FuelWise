@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchDistanceOnly } from '../api/distanceOnly';
-import { fetchUserProfile } from '../api/profile';
 import { getNearestStation, calculateCentDifference, calculateAreaStatistics } from '../utils/savings';
 import { sortByDistanceWithPreferred, isPreferredStation } from '../utils/preferredStations';
 import { usePreferredBrands } from '../hooks/usePreferredBrands';
@@ -17,29 +16,13 @@ const FuelListDistance = ({ userLocation }) => {
   const navigate = useNavigate();
   const { preferredBrands, loading: brandsLoading } = usePreferredBrands();
 
-  // Fetch user profile to get fuel type preference
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const profile = await fetchUserProfile();
-        if (profile?.vehicle?.fuelType) {
-          setUserFuelType(profile.vehicle.fuelType);
-        }
-      } catch (error) {
-        console.error('Error loading user profile:', error);
-        // Keep default fuel type if profile fetch fails
-      }
-    };
-    
-    loadUserProfile();
-  }, []);
-
   // Get URL parameters on component mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const amount = urlParams.get('amount');
     const efficiency = urlParams.get('efficiency');
     const radius = urlParams.get('radius') || '5'; // Default to 5km if not provided
+    const fuelTypeParam = urlParams.get('fuelType') || 'Regular'; // Default to Regular if not provided
     
     if (amount && efficiency) {
       setSearchParams({
@@ -47,6 +30,11 @@ const FuelListDistance = ({ userLocation }) => {
         efficiency: parseFloat(efficiency),
         radius: radius
       });
+    }
+
+    // Set fuel type from URL or default to Regular
+    if (['Regular', 'Premium', 'Diesel'].includes(fuelTypeParam)) {
+      setUserFuelType(fuelTypeParam);
     }
   }, []);
 
@@ -94,7 +82,8 @@ const FuelListDistance = ({ userLocation }) => {
     const params = new URLSearchParams({
       amount: searchParams?.amount?.toString() || '',
       efficiency: searchParams?.efficiency?.toString() || '',
-      radius: searchParams?.radius?.toString() || '5'
+      radius: searchParams?.radius?.toString() || '5',
+      fuelType: userFuelType || 'Regular'
     });
     navigate(`/search?${params.toString()}`);
   };

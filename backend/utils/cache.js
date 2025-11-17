@@ -48,6 +48,14 @@ const cleanup = () => {
 };
 
 /**
+ * Clear all cache entries
+ */
+const clear = () => {
+  cache.clear();
+  console.log('💾 Cache cleared');
+};
+
+/**
  * Get cache stats
  */
 const getStats = () => {
@@ -60,5 +68,5 @@ const getStats = () => {
 // Cleanup expired entries every 5 minutes
 setInterval(cleanup, 5 * 60 * 1000);
 
-module.exports = { get, set, getStats };
+module.exports = { get, set, getStats, clear };
 

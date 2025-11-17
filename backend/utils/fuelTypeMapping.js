@@ -1,24 +1,24 @@
 // Mapping between user fuel type preferences and Google Places API fuel types
 const FUEL_TYPE_MAPPING = {
-  'Regular': 'REGULAR_UNLEADED',
-  'Premium': 'PREMIUM', 
-  'Diesel': 'DIESEL'
+  'Regular': ['REGULAR_UNLEADED'],
+  'Premium': ['PREMIUM_UNLEADED', 'PREMIUM'], 
+  'Diesel': ['DIESEL', 'TRUCK_DIESEL']
 };
 
-// Fallback order for fuel types when preferred type is not available
+// Fallback order for fuel types when preferred type is not available (only used for Regular)
 const FUEL_TYPE_FALLBACK_ORDER = {
-  'Regular': ['REGULAR_UNLEADED', 'MIDGRADE', 'PREMIUM'],
-  'Premium': ['PREMIUM', 'REGULAR_UNLEADED', 'MIDGRADE'],
-  'Diesel': ['DIESEL', 'DIESEL_PLUS', 'TRUCK_DIESEL']
+  'Regular': ['REGULAR_UNLEADED', 'MIDGRADE', 'PREMIUM_UNLEADED', 'PREMIUM'],
+  'Premium': ['PREMIUM_UNLEADED', 'PREMIUM'],
+  'Diesel': ['DIESEL', 'TRUCK_DIESEL']
 };
 
 /**
- * Get the Google Places API fuel type for a user's fuel preference
+ * Get the Google Places API fuel types for a user's fuel preference
  * @param {string} userFuelType - User's fuel type preference ('Regular', 'Premium', 'Diesel')
- * @returns {string} - Google Places API fuel type
+ * @returns {string[]} - Array of Google Places API fuel types
  */
 const getUserFuelType = (userFuelType) => {
-  return FUEL_TYPE_MAPPING[userFuelType] || 'REGULAR_UNLEADED';
+  return FUEL_TYPE_MAPPING[userFuelType] || ['REGULAR_UNLEADED'];
 };
 
 /**
@@ -41,9 +41,25 @@ const findBestFuelPrice = (fuelPrices, userFuelType) => {
     return null;
   }
 
+  // For Premium and Diesel, ONLY return exact match - no fallbacks to Regular
+  // Users searching for Premium/Diesel want those specific types only
+  if (userFuelType === 'Premium' || userFuelType === 'Diesel') {
+    const allowedTypes = getUserFuelType(userFuelType);
+    
+    // Try each allowed type for this fuel preference
+    for (const fuelType of allowedTypes) {
+      const fuelEntry = fuelPrices.find(fp => fp.type === fuelType);
+      if (fuelEntry && fuelEntry.price?.units != null && fuelEntry.price?.nanos != null) {
+        return fuelEntry;
+      }
+    }
+    
+    // If no Premium or Diesel found, return null (DO NOT fallback to Regular)
+    return null;
+  }
+
+  // For Regular, use fallback logic (can accept Midgrade/Premium as alternatives)
   const fallbackTypes = getFuelTypeFallbacks(userFuelType);
-  
-  // Try each fallback type in order of preference
   for (const fuelType of fallbackTypes) {
     const fuelEntry = fuelPrices.find(fp => fp.type === fuelType);
     if (fuelEntry && fuelEntry.price?.units != null && fuelEntry.price?.nanos != null) {
