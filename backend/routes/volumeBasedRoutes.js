@@ -95,25 +95,7 @@ router.post("/", optionalAuth, dailySearchLimiter, searchRateLimiter, activityLo
           const details = detailsRes.data;
 
           const prices = details?.fuelOptions?.fuelPrices;
-          
-          // === DEBUG LOGGING (TEMP) ===
-          console.log("\n🔍 === FUEL OPTIONS DEBUG (VOLUME-BASED) ===");
-          console.log("📍 Station:", details.displayName?.text || station.name);
-          console.log("🆔 Place ID:", station.place_id);
-          console.log("⛽ User requested fuel type:", fuelType);
-          console.log("📊 Raw fuelPrices from Google:", JSON.stringify(prices, null, 2));
-          // === END DEBUG ===
-          
           const fuelEntry = findBestFuelPrice(prices, fuelType);
-          
-          // === DEBUG LOGGING (TEMP) ===
-          console.log("✅ Chosen fuelEntry type:", fuelEntry?.type || "NONE");
-          console.log("💰 Chosen price:", fuelEntry?.price ? `$${convertPriceToFloat(fuelEntry.price)}` : "N/A");
-          if (!fuelEntry) {
-            console.log("❌ Skipping station - no matching fuel type found");
-          }
-          console.log("===========================================\n");
-          // === END DEBUG ===
 
           if (!fuelEntry) {
             return null;
