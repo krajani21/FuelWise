@@ -2,7 +2,7 @@
 
 🚀 **Live Demo**  
 Try it out now and start saving on fuel:  
-https://fuel-wise.vercel.app/
+https://fuelwiseapp.com/
 
 📝 **Design Document**  
 **Author:** Krish Rajani
