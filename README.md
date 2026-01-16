@@ -4,6 +4,8 @@
 Try it out now and start saving on fuel:  
 https://fuelwiseapp.com/
 
+**NB: The app may take some time to respond due to cold starts, since the backend server is hosted on a free service**
+
 📝 **Design Document**  
 **Author:** Krish Rajani
 
